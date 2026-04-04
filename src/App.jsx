@@ -47,7 +47,7 @@ const C = {
 };
 
 // ─── MOCK DATA ────────────────────────────────────────────────
-const MOCK_USER = { id: "u1", name: "Valentina Rojas", role: "treasurer", email: "tesorera@nahuel.cl" };
+const MOCK_USER = { id: "u1", name: "Lucia Araos", role: "treasurer", email: "lucia.camila.ad@gmail.com" };
 
 const MOCK_TRANSACTIONS = [
   { id:"t1", date:"2025-03-10", description:"Cuota marzo - 12 apoderados",     type:"income",  amount:60000, balance_after:60000,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-03-10T10:00:00Z" },
