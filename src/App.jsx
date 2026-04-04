@@ -50,13 +50,13 @@ const C = {
 const MOCK_USER = { id: "u1", name: "Lucia Araos", role: "treasurer", email: "lucia.camila.ad@gmail.com" };
 
 const MOCK_TRANSACTIONS = [
-  { id:"t1", date:"2025-03-10", description:"Cuota marzo - 12 apoderados",     type:"income",  amount:60000, balance_after:60000,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-03-10T10:00:00Z" },
-  { id:"t2", date:"2025-03-15", description:"Compra materiales didácticos",     type:"expense", amount:18500, balance_after:41500,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-03-15T14:30:00Z" },
-  { id:"t3", date:"2025-03-22", description:"Decoración Día del Alumno",        type:"expense", amount:12000, balance_after:29500,  status:"confirmed", receipt_url:null,created_by:"Valentina Rojas", created_at:"2025-03-22T09:15:00Z" },
-  { id:"t4", date:"2025-04-05", description:"Cuota abril - 11 apoderados",      type:"income",  amount:55000, balance_after:84500,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-04-05T11:00:00Z" },
-  { id:"t5", date:"2025-04-18", description:"Fotocopia pruebas evaluación",     type:"expense", amount:3200,  balance_after:81300,  status:"pending",   receipt_url:null,created_by:"Valentina Rojas", created_at:"2025-04-18T16:00:00Z" },
-  { id:"t6", date:"2025-05-02", description:"Cuota mayo - 10 apoderados",       type:"income",  amount:50000, balance_after:131300, status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-05-02T10:30:00Z" },
-  { id:"t7", date:"2025-05-20", description:"Paseo educativo Jardín Botánico",  type:"expense", amount:45000, balance_after:86300,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-05-20T08:00:00Z" },
+  { id:"t1", date:"2025-03-10", description:"Cuota marzo - 12 apoderados",     type:"income",  amount:60000, balance_after:60000,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-03-10T10:00:00Z" },
+  { id:"t2", date:"2025-03-15", description:"Compra materiales didácticos",     type:"expense", amount:18500, balance_after:41500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-03-15T14:30:00Z" },
+  { id:"t3", date:"2025-03-22", description:"Decoración Día del Alumno",        type:"expense", amount:12000, balance_after:29500,  status:"confirmed", receipt_url:null,created_by:"Lucia Araos", created_at:"2025-03-22T09:15:00Z" },
+  { id:"t4", date:"2025-04-05", description:"Cuota abril - 11 apoderados",      type:"income",  amount:55000, balance_after:84500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-04-05T11:00:00Z" },
+  { id:"t5", date:"2025-04-18", description:"Fotocopia pruebas evaluación",     type:"expense", amount:3200,  balance_after:81300,  status:"pending",   receipt_url:null,created_by:"Lucia Araos", created_at:"2025-04-18T16:00:00Z" },
+  { id:"t6", date:"2025-05-02", description:"Cuota mayo - 10 apoderados",       type:"income",  amount:50000, balance_after:131300, status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-05-02T10:30:00Z" },
+  { id:"t7", date:"2025-05-20", description:"Paseo educativo Jardín Botánico",  type:"expense", amount:45000, balance_after:86300,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-05-20T08:00:00Z" },
 ];
 
 const MOCK_STUDENTS = [
