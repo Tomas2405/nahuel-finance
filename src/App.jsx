@@ -4,7 +4,45 @@
 // Escuela de Lenguaje Nahuel — Tema: Yoshi
 // ============================================================
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+// ─── SUPABASE STORAGE ────────────────────────────────────────
+const SUPA_URL = "https://hxebzjplortrsxzwufel.supabase.co";
+const SUPA_KEY = "sb_publishable_rT-uzCy08mEbOcMt9Q4Ixw_VpJaSLRk";
+
+async function supaUpload(file, apoderado, mes) {
+  const ext = file.name.split(".").pop();
+  const nombre = `${apoderado.replace(/\s+/g,"_")}_${mes}_${Date.now()}.${ext}`;
+  const res = await fetch(`${SUPA_URL}/storage/v1/object/comprobantes/${nombre}`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${SUPA_KEY}`,
+      "Content-Type": file.type,
+      "x-upsert": "true",
+    },
+    body: file,
+  });
+  if (!res.ok) throw new Error("Error al subir");
+  return `${SUPA_URL}/storage/v1/object/public/comprobantes/${nombre}`;
+}
+
+async function supaListar() {
+  const res = await fetch(`${SUPA_URL}/storage/v1/object/list/comprobantes`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${SUPA_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ prefix: "", limit: 200 }),
+  });
+  if (!res.ok) return [];
+  const data = await res.json();
+  return (data||[]).map(f => ({
+    name: f.name,
+    url: `${SUPA_URL}/storage/v1/object/public/comprobantes/${f.name}`,
+    created: f.created_at,
+  }));
+}
+
 
 
 // ─── IMÁGENES YOSHI (alta calidad) ─────────────────────────
@@ -47,20 +85,20 @@ const C = {
 };
 
 // ─── MOCK DATA ────────────────────────────────────────────────
-const MOCK_USER = { id: "u1", name: "Lucia Araos", role: "treasurer", email: "lucia.camila.ad@gmail.com" };
+const MOCK_USER = { id: "u1", name: "Valentina Rojas", role: "treasurer", email: "tesorera@nahuel.cl" };
 
 const MOCK_TRANSACTIONS = [
-  { id:"t1", date:"2025-03-10", description:"Cuota marzo - 12 apoderados",     type:"income",  amount:60000, balance_after:60000,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-03-10T10:00:00Z" },
-  { id:"t2", date:"2025-03-15", description:"Compra materiales didácticos",     type:"expense", amount:18500, balance_after:41500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-03-15T14:30:00Z" },
-  { id:"t3", date:"2025-03-22", description:"Decoración Día del Alumno",        type:"expense", amount:12000, balance_after:29500,  status:"confirmed", receipt_url:null,created_by:"Lucia Araos", created_at:"2025-03-22T09:15:00Z" },
-  { id:"t4", date:"2025-04-05", description:"Cuota abril - 11 apoderados",      type:"income",  amount:55000, balance_after:84500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-04-05T11:00:00Z" },
-  { id:"t5", date:"2025-04-18", description:"Fotocopia pruebas evaluación",     type:"expense", amount:3200,  balance_after:81300,  status:"pending",   receipt_url:null,created_by:"Lucia Araos", created_at:"2025-04-18T16:00:00Z" },
-  { id:"t6", date:"2025-05-02", description:"Cuota mayo - 10 apoderados",       type:"income",  amount:50000, balance_after:131300, status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-05-02T10:30:00Z" },
-  { id:"t7", date:"2025-05-20", description:"Paseo educativo Jardín Botánico",  type:"expense", amount:45000, balance_after:86300,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-05-20T08:00:00Z" },
+  { id:"t1", date:"2025-03-10", description:"Cuota marzo - 12 apoderados",     type:"income",  amount:60000, balance_after:60000,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-03-10T10:00:00Z" },
+  { id:"t2", date:"2025-03-15", description:"Compra materiales didácticos",     type:"expense", amount:18500, balance_after:41500,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-03-15T14:30:00Z" },
+  { id:"t3", date:"2025-03-22", description:"Decoración Día del Alumno",        type:"expense", amount:12000, balance_after:29500,  status:"confirmed", receipt_url:null,created_by:"Valentina Rojas", created_at:"2025-03-22T09:15:00Z" },
+  { id:"t4", date:"2025-04-05", description:"Cuota abril - 11 apoderados",      type:"income",  amount:55000, balance_after:84500,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-04-05T11:00:00Z" },
+  { id:"t5", date:"2025-04-18", description:"Fotocopia pruebas evaluación",     type:"expense", amount:3200,  balance_after:81300,  status:"pending",   receipt_url:null,created_by:"Valentina Rojas", created_at:"2025-04-18T16:00:00Z" },
+  { id:"t6", date:"2025-05-02", description:"Cuota mayo - 10 apoderados",       type:"income",  amount:50000, balance_after:131300, status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-05-02T10:30:00Z" },
+  { id:"t7", date:"2025-05-20", description:"Paseo educativo Jardín Botánico",  type:"expense", amount:45000, balance_after:86300,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-05-20T08:00:00Z" },
 ];
 
 const MOCK_STUDENTS = [
-  { id:"s1",  full_name:"Camilo Fuentes Araos",   birth_date:"2022-11-22", guardian:"Lucia Araos / Tomás Fuentes",    guardian_phone:"+56997935275 / +56997925306" },
+  { id:"s1",  full_name:"Sofía Méndez Araya",     birth_date:"2020-01-14", guardian:"Andrea Araya",    guardian_phone:"+56912345678" },
   { id:"s2",  full_name:"Mateo González Torres",  birth_date:"2020-03-22", guardian:"Carlos González", guardian_phone:"+56923456789" },
   { id:"s3",  full_name:"Valentina Soto Pérez",   birth_date:"2020-04-05", guardian:"Mónica Pérez",    guardian_phone:"+56934567890" },
   { id:"s4",  full_name:"Nicolás Fuentes Mora",   birth_date:"2020-02-18", guardian:"Rodrigo Fuentes", guardian_phone:"+56945678901" },
@@ -310,6 +348,11 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
 
 // ─── PAGE 2: COMPROBANTES ─────────────────────────────────────
 const Comprobantes = ({ transactions }) => {
+  const [archivos, setArchivos] = useState([]);
+  const [loadingArch, setLoadingArch] = useState(true);
+  useEffect(() => {
+    supaListar().then(f=>{setArchivos(f);setLoadingArch(false);}).catch(()=>setLoadingArch(false));
+  }, []);
   const withReceipt = transactions.filter(t=>t.receipt_url);
   const noReceipt   = transactions.filter(t=>!t.receipt_url);
 
@@ -346,7 +389,31 @@ const Comprobantes = ({ transactions }) => {
         ))}
       </div>
 
-      {noReceipt.length>0&&(
+        {/* Comprobantes subidos en Supabase Storage */}
+      {loadingArch && (
+        <div style={{textAlign:"center",padding:"1.5rem",color:C.textLight,fontWeight:"700",fontSize:"0.85rem"}}>
+          🔄 Cargando archivos del servidor...
+        </div>
+      )}
+      {!loadingArch && archivos.length > 0 && (
+        <div style={{marginBottom:"1.5rem"}}>
+          <h3 style={{fontSize:"1rem",fontWeight:"900",color:C.greenDark,marginBottom:"0.75rem",display:"flex",alignItems:"center",gap:"0.5rem"}}>
+            <img src={IMGS.egg_white_yellow} alt="" style={{width:28}}/> Comprobantes en la nube ({archivos.length})
+          </h3>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:"0.75rem"}}>
+            {archivos.map((f,i)=>(
+              <div key={i} style={{background:C.yellowBg,borderRadius:"1rem",padding:"0.85rem 1rem",border:`2px solid ${C.yellow}55`,display:"flex",flexDirection:"column",gap:"0.4rem"}}>
+                <div style={{fontSize:"0.82rem",fontWeight:"800",color:C.text,wordBreak:"break-all"}}>{f.name}</div>
+                <a href={f.url} target="_blank" rel="noreferrer" style={{fontSize:"0.78rem",fontWeight:"900",color:C.green,textDecoration:"none",background:C.greenLight,padding:"0.3rem 0.6rem",borderRadius:"0.5rem",textAlign:"center",border:`1.5px solid ${C.border}`}}>
+                  📥 Ver / Descargar
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+    {noReceipt.length>0&&(
         <div style={{marginTop:"2rem"}}>
           <h3 style={{fontFamily:"'Nunito',sans-serif",fontWeight:"900",fontSize:"1.05rem",color:"#92400e",marginBottom:"0.85rem"}}>⚠️ Movimientos sin comprobante</h3>
           {noReceipt.map(tx=>(
@@ -446,7 +513,7 @@ const CUOTA_MESES = ["Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octub
 const CUOTA_VALOR = 5000;
 
 const MOCK_APODERADOS = [
-  { id:"a1",  nombre:"Lucia Araos / Tomás Fuentes",    alumno:"Camilo Fuentes Araos",    telefono:"+56997935275 / +56997925306", cuotas:{Abril:"pagada",Mayo:"pagada",Junio:"pagada",Julio:"pagada",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a1",  nombre:"Andrea Araya",    alumno:"Sofía Méndez",    telefono:"+56912345678", cuotas:{Abril:"pagada",Mayo:"pagada",Junio:"pagada",Julio:"pagada",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a2",  nombre:"Carlos González", alumno:"Mateo González",  telefono:"+56923456789", cuotas:{Abril:"pagada",Mayo:"pagada",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a3",  nombre:"Mónica Pérez",    alumno:"Valentina Soto",  telefono:"+56934567890", cuotas:{Abril:"pagada",Mayo:"pagada",Junio:"pagada",Julio:"pagada",Agosto:"pagada",Septiembre:"pagada",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a4",  nombre:"Rodrigo Fuentes", alumno:"Nicolás Fuentes", telefono:"+56945678901", cuotas:{Abril:"pagada",Mayo:"pagada",Junio:"pagada",Julio:"pagada",Agosto:"pagada",Septiembre:"pagada",Octubre:"pagada",Noviembre:"pagada",Diciembre:"pendiente"} },
@@ -463,8 +530,19 @@ const MOCK_APODERADOS = [
 // ─── UPLOAD MODAL ──────────────────────────────────────────────
 const UploadModal = ({ apoderado, mes, onClose }) => {
   const [file, setFile] = useState(null);
-  const handle = () => {
-    if(file) { alert("Comprobante adjuntado (demo). En producción se sube a Supabase Storage."); onClose(); }
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const handle = async () => {
+    if(!file) return;
+    setLoading(true); setError("");
+    try {
+      const url = await supaUpload(file, apoderado, mes);
+      alert(`✅ ¡Comprobante subido!\n\nURL: ${url}`);
+      onClose();
+    } catch(e) {
+      setError("❌ Error al subir. Intenta de nuevo.");
+      setLoading(false);
+    }
   };
   return (
     <Modal title="📎 Adjuntar Comprobante" onClose={onClose}>
@@ -481,9 +559,10 @@ const UploadModal = ({ apoderado, mes, onClose }) => {
       </div>
       <div style={{display:"flex",gap:"0.75rem",justifyContent:"flex-end"}}>
         <button style={btnGhost} onClick={onClose}>Cancelar</button>
-        <button style={{...btnPrimary,opacity:file?1:0.5}} onClick={handle}>
-          <Icon name="upload" size={15}/> Subir
+        <button style={{...btnPrimary,opacity:(file&&!loading)?1:0.5}} onClick={handle} disabled={loading}>
+          <Icon name="upload" size={15}/> {loading?"Subiendo...":"Subir"}
         </button>
+        {error && <p style={{color:"#e8302a",fontSize:"0.8rem",fontWeight:"800",margin:"0.5rem 0 0"}}>{error}</p>}
       </div>
     </Modal>
   );
