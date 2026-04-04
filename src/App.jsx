@@ -60,7 +60,7 @@ const MOCK_TRANSACTIONS = [
 ];
 
 const MOCK_STUDENTS = [
-  { id:"s1",  full_name:"Sofía Méndez Araya",     birth_date:"2020-01-14", guardian:"Andrea Araya",    guardian_phone:"+56912345678" },
+  { id:"s1",  full_name:"Camilo Fuentes Araos",   birth_date:"2022-11-22", guardian:"Lucia Araos / Tomás Fuentes",    guardian_phone:"+56997935275 / +56997925306" },
   { id:"s2",  full_name:"Mateo González Torres",  birth_date:"2020-03-22", guardian:"Carlos González", guardian_phone:"+56923456789" },
   { id:"s3",  full_name:"Valentina Soto Pérez",   birth_date:"2020-04-05", guardian:"Mónica Pérez",    guardian_phone:"+56934567890" },
   { id:"s4",  full_name:"Nicolás Fuentes Mora",   birth_date:"2020-02-18", guardian:"Rodrigo Fuentes", guardian_phone:"+56945678901" },
@@ -446,7 +446,7 @@ const CUOTA_MESES = ["Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octub
 const CUOTA_VALOR = 5000;
 
 const MOCK_APODERADOS = [
-  { id:"a1",  nombre:"Andrea Araya",    alumno:"Sofía Méndez",    telefono:"+56912345678", cuotas:{Abril:"pagada",Mayo:"pagada",Junio:"pagada",Julio:"pagada",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a1",  nombre:"Lucia Araos / Tomás Fuentes",    alumno:"Camilo Fuentes Araos",    telefono:"+56997935275 / +56997925306", cuotas:{Abril:"pagada",Mayo:"pagada",Junio:"pagada",Julio:"pagada",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a2",  nombre:"Carlos González", alumno:"Mateo González",  telefono:"+56923456789", cuotas:{Abril:"pagada",Mayo:"pagada",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a3",  nombre:"Mónica Pérez",    alumno:"Valentina Soto",  telefono:"+56934567890", cuotas:{Abril:"pagada",Mayo:"pagada",Junio:"pagada",Julio:"pagada",Agosto:"pagada",Septiembre:"pagada",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a4",  nombre:"Rodrigo Fuentes", alumno:"Nicolás Fuentes", telefono:"+56945678901", cuotas:{Abril:"pagada",Mayo:"pagada",Junio:"pagada",Julio:"pagada",Agosto:"pagada",Septiembre:"pagada",Octubre:"pagada",Noviembre:"pagada",Diciembre:"pendiente"} },
