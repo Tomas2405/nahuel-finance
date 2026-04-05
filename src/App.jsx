@@ -687,7 +687,7 @@ const UploadModal = ({ apoderado, mes, onClose }) => {
 };
 
 // ─── PAGE 4: CUOTAS ────────────────────────────────────────────
-const Cuotas = ({ role }) => {
+const Cuotas = ({ role, transactions }) => {
   const [apoderados, setApoderados] = useState(MOCK_APODERADOS);
   const [uploadTarget, setUploadTarget] = useState(null);
   const [busqueda, setBusqueda] = useState("");
