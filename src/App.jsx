@@ -486,10 +486,14 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
                   {role==="treasurer"&&(
                     <td style={{padding:"0.5rem",textAlign:"center"}}>
                       <button
-                        onClick={()=>{
+                        onClick={async ()=>{
                           if(!window.confirm("¿Eliminar esta transacción?")) return;
-                          dbEliminar(tx.id);
-                          setTransactions(prev=>prev.filter(t=>t.id!==tx.id));
+                          const ok = await dbEliminar(tx.id);
+                          if(ok) {
+                            setTransactions(prev=>prev.filter(t=>t.id!==tx.id));
+                          } else {
+                            alert("❌ Error al eliminar. Intenta de nuevo.");
+                          }
                         }}
                         style={{background:"none",border:"none",cursor:"pointer",fontSize:"1.1rem",padding:"0.2rem 0.4rem",borderRadius:"0.4rem",color:"#e8302a"}}
                         title="Eliminar transacción"
