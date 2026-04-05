@@ -388,7 +388,15 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
                   </td>
                   <td style={{padding:"0.75rem 1rem",fontWeight:"900",color:C.green,whiteSpace:"nowrap"}}>{fCLP(tx.balance_after)}</td>
                   <td style={{padding:"0.75rem 1rem"}}>
-                    <span style={{display:"inline-flex",alignItems:"center",gap:"0.3rem",padding:"0.2rem 0.65rem",borderRadius:"2rem",fontSize:"0.76rem",fontWeight:"900",background:tx.status==="confirmed"?C.greenMid:C.yellowBg,color:tx.status==="confirmed"?C.greenDark:"#92400e"}}>
+                    <span
+                      onClick={()=>{
+                        if(role!=="treasurer") return;
+                        const s = tx.status==="confirmed"?"pending":"confirmed";
+                        dbActualizarEstado(tx.id, s);
+                        setTransactions(prev=>prev.map(t=>t.id===tx.id?{...t,status:s}:t));
+                      }}
+                      style={{display:"inline-flex",alignItems:"center",gap:"0.3rem",padding:"0.2rem 0.65rem",borderRadius:"2rem",fontSize:"0.76rem",fontWeight:"900",background:tx.status==="confirmed"?C.greenMid:C.yellowBg,color:tx.status==="confirmed"?C.greenDark:"#92400e",cursor:role==="treasurer"?"pointer":"default"}}
+                      title={role==="treasurer"?"Clic para cambiar estado":""}>
                       {tx.status==="confirmed"?"✅ Confirmado":"⏳ Pendiente"}
                     </span>
                   </td>
