@@ -405,6 +405,19 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
                       ?<a href={tx.receipt_url} style={{display:"inline-flex",alignItems:"center",gap:"0.3rem",color:C.green,textDecoration:"none",fontSize:"0.82rem",fontWeight:"800"}}><Icon name="eye" size={14}/>Ver</a>
                       :<span style={{color:C.textLight,fontSize:"0.8rem"}}>—</span>}
                   </td>
+                  {role==="treasurer"&&(
+                    <td style={{padding:"0.5rem",textAlign:"center"}}>
+                      <button
+                        onClick={()=>{
+                          if(!window.confirm("¿Eliminar esta transacción?")) return;
+                          dbEliminar(tx.id);
+                          setTransactions(prev=>prev.filter(t=>t.id!==tx.id));
+                        }}
+                        style={{background:"none",border:"none",cursor:"pointer",fontSize:"1.1rem",padding:"0.2rem 0.4rem",borderRadius:"0.4rem",color:"#e8302a"}}
+                        title="Eliminar transacción"
+                      >🗑️</button>
+                    </td>
+                  )}
                 </tr>
               ))}
               {dbLoading&&<tr><td colSpan={7} style={{padding:"2rem",textAlign:"center",color:C.textLight,fontWeight:"700"}}>🔄 Cargando transacciones...</td></tr>}
