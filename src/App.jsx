@@ -11,7 +11,11 @@ const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 
 async function supaUpload(file, apoderado, mes) {
   const ext = file.name.split(".").pop();
-  const nombre = `${apoderado.replace(/\s+/g,"_")}_${mes}_${Date.now()}.${ext}`;
+  const limpio = apoderado
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-zA-Z0-9\s]/g,"")
+    .trim().replace(/\s+/g,"_");
+  const nombre = `${limpio}_${mes}_${Date.now()}.${ext}`;
   const res = await fetch(`${SUPA_URL}/storage/v1/object/comprobantes/${nombre}`, {
     method: "POST",
     headers: {
