@@ -42,6 +42,57 @@ async function supaListar() {
     created: f.created_at,
   }));
 }
+// ─── SUPABASE DATABASE (transacciones) ───────────────────────
+async function dbCargar() {
+  const res = await fetch(`${SUPA_URL}/rest/v1/transacciones?order=date.asc,created_at.asc`, {
+    headers: {
+      "Authorization": `Bearer ${SUPA_KEY}`,
+      "apikey": SUPA_KEY,
+    }
+  });
+  if (!res.ok) return [];
+  return await res.json();
+}
+
+async function dbGuardar(tx) {
+  const res = await fetch(`${SUPA_URL}/rest/v1/transacciones`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${SUPA_KEY}`,
+      "apikey": SUPA_KEY,
+      "Content-Type": "application/json",
+      "Prefer": "return=minimal",
+    },
+    body: JSON.stringify(tx),
+  });
+  return res.ok;
+}
+
+async function dbActualizarEstado(id, status) {
+  const res = await fetch(`${SUPA_URL}/rest/v1/transacciones?id=eq.${id}`, {
+    method: "PATCH",
+    headers: {
+      "Authorization": `Bearer ${SUPA_KEY}`,
+      "apikey": SUPA_KEY,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status }),
+  });
+  return res.ok;
+}
+
+async function dbEliminar(id) {
+  const res = await fetch(`${SUPA_URL}/rest/v1/transacciones?id=eq.${id}`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${SUPA_KEY}`,
+      "apikey": SUPA_KEY,
+    },
+  });
+  return res.ok;
+}
+
+
 
 
 
@@ -212,7 +263,10 @@ const TransactionForm = ({ onSave, onClose }) => {
   const set = (k,v) => setF(p=>({...p,[k]:v}));
   const save = () => {
     if(!f.description||!f.amount||!f.date) return alert("¡Completa todos los campos!");
-    onSave({...f,amount:parseFloat(f.amount),id:"t"+Date.now(),status:"pending",receipt_url:null,created_by:MOCK_USER.name,created_at:new Date().toISOString()});
+    const amt = parseFloat(f.amount);
+      const newTx = {...f, amount: amt, id:"t"+Date.now(), status:"pending", receipt_url:null, created_by:MOCK_USER.name, created_at:new Date().toISOString(), balance_after: amt};
+      dbGuardar(newTx);
+      onSave(newTx);
     onClose();
   };
   return (
@@ -240,6 +294,16 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
   const [filter, setFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
   const [sortAsc, setSortAsc] = useState(true);
+  const [dbLoading, setDbLoading] = useState(false);
+
+  // Cargar transacciones desde Supabase al montar
+  useEffect(() => {
+    setDbLoading(true);
+    dbCargar().then(data => {
+      if (data && data.length > 0) setTransactions(data);
+      setDbLoading(false);
+    }).catch(() => setDbLoading(false));
+  }, []);
 
   const filtered = useMemo(() => {
     let l = [...transactions];
@@ -324,9 +388,7 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
                   </td>
                   <td style={{padding:"0.75rem 1rem",fontWeight:"900",color:C.green,whiteSpace:"nowrap"}}>{fCLP(tx.balance_after)}</td>
                   <td style={{padding:"0.75rem 1rem"}}>
-                    <span style={{display:"inline-flex",alignItems:"center",gap:"0.3rem",padding:"0.2rem 0.65rem",borderRadius:"2rem",fontSize:"0.76rem",fontWeight:"900",background:tx.status==="confirmed"?C.greenMid:C.yellowBg,color:tx.status==="confirmed"?C.greenDark:"#92400e",cursor:role==="treasurer"?"pointer":"default"}}
-                      onClick={()=>role==="treasurer"&&setTransactions(prev=>prev.map(t=>t.id===tx.id?{{...t,status:t.status==="confirmed"?"pending":"confirmed"}}:t))}
-                      title={role==="treasurer"?"Clic para cambiar estado":""}>
+                    <span style={{display:"inline-flex",alignItems:"center",gap:"0.3rem",padding:"0.2rem 0.65rem",borderRadius:"2rem",fontSize:"0.76rem",fontWeight:"900",background:tx.status==="confirmed"?C.greenMid:C.yellowBg,color:tx.status==="confirmed"?C.greenDark:"#92400e"}}>
                       {tx.status==="confirmed"?"✅ Confirmado":"⏳ Pendiente"}
                     </span>
                   </td>
@@ -337,7 +399,8 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
                   </td>
                 </tr>
               ))}
-              {filtered.length===0&&<tr><td colSpan={7} style={{padding:"3rem",textAlign:"center",color:C.textLight,fontSize:"1rem"}}>Sin registros para este filtro.</td></tr>}
+              {dbLoading&&<tr><td colSpan={7} style={{padding:"2rem",textAlign:"center",color:C.textLight,fontWeight:"700"}}>🔄 Cargando transacciones...</td></tr>}
+              {!dbLoading&&filtered.length===0&&<tr><td colSpan={7} style={{padding:"3rem",textAlign:"center",color:C.textLight,fontSize:"1rem"}}>Sin registros para este filtro.</td></tr>}
             </tbody>
           </table>
         </div>
