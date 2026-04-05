@@ -142,15 +142,7 @@ const C = {
 // ─── MOCK DATA ────────────────────────────────────────────────
 const MOCK_USER = { id: "u1", name: "Lucia Araos", role: "treasurer", email: "lucia.camila@gmail.com" };
 
-const MOCK_TRANSACTIONS = [
-  { id:"t1", date:"2026-03-30", description:"Cuota Abril - Josué Cancino",        type:"income",  amount:5000, balance_after:60000,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T10:00:00Z" },
-  { id:"t2", date:"2026-03-31", description:"Couta Abril - Belén Fernández",      type:"income",  amount:5000, balance_after:41500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T14:30:00Z" },
-  { id:"t3", date:"2026-03-31", description:"Couta Abril - Ián Olgúin",           type:"income",  amount:5000, balance_after:29500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T09:15:00Z" },
-  { id:"t4", date:"2026-03-31", description:"Cuota Abril - Iván Nuñez",           type:"income",  amount:5000, balance_after:84500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T11:00:00Z" },
-  { id:"t5", date:"2026-03-31", description:"Cuota Abril - Lucas Robledo",        type:"income",  amount:5000, balance_after:81300,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T16:00:00Z" },
-  { id:"t6", date:"2026-04-01", description:"Cuota Abril - Damián Jelvez",        type:"income",  amount:5000, balance_after:131300, status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T10:30:00Z" },
-  { id:"t7", date:"2026-04-04", description:"Couta Abril - Camilo Fuentes",       type:"income",  amount:5000, balance_after:86300,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T08:00:00Z" },
-];
+const MOCK_TRANSACTIONS = [];
 
 const MOCK_STUDENTS = [
   { id:"s1",  full_name:"Agatha",     				birth_date:"2022-07-20", guardian:"Franciso",    							guardian_phone:"+56912345678" },
@@ -681,18 +673,18 @@ const CUOTA_MESES = ["Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octub
 const CUOTA_VALOR = 5000;
 
 const MOCK_APODERADOS = [
-  { id:"a1",  nombre:"Francisco",    							alumno:"Agatha",    telefono:"+56912345678", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a2",  nombre:"", 										alumno:"Agustín",  telefono:"+56923456789", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a3",  nombre:"",    									alumno:"Alondra Arancibia",  telefono:"+56934567890", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a4",  nombre:"Katherine González_Pablo Fernandéz", 	alumno:"Belén Fernandéz", telefono:"+56945678901", cuotas:{Abril:"pagada",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a5",  nombre:"Lucia Araos_Tomás Fuentes",     		alumno:"Camilo Fuentes Araos",  telefono:"+56956789012", cuotas:{Abril:"pagada",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a6",  nombre:"Ninoska Cáceres_Axel Jelvez",   		alumno:"Damián Jelvez",   telefono:"+56967890123", cuotas:{Abril:"pagada",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a7",  nombre:"Allyson Roman",    						alumno:"Emiliano Silva", telefono:"+56978901234", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a8",  nombre:"Francisca Córdova_Kevin Olguín",    	alumno:"Ián Olguín Córdova",   telefono:"+56989012345", cuotas:{Abril:"pagada",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a9",  nombre:"Michelle Oses",  							alumno:"Iván Nuñez Oses",  telefono:"+56990123456", cuotas:{Abril:"pagada",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a10", nombre:"Ruth Galeas",  							alumno:"Josué Cancino", telefono:"+56901234567", cuotas:{Abril:"pagada",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a11", nombre:"Angela Robledo",   						alumno:"Lucas Robledo", telefono:"+56912340000", cuotas:{Abril:"pagada",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a12", nombre:"",    									alumno:"Valentina",   telefono:"+56923450000", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a1",  nombre:"Francisco",    							alumno:"Agatha",    			telefono:"+56912345678", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a2",  nombre:"", 										alumno:"Agustín",  				telefono:"+56923456789", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a3",  nombre:"",    									alumno:"Alondra Arancibia",  	telefono:"+56934567890", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a4",  nombre:"Katherine González_Pablo Fernandéz", 		alumno:"Belén Fernandéz", 		telefono:"+56945678901", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a5",  nombre:"Lucia Araos_Tomás Fuentes",     			alumno:"Camilo Fuentes Araos",  telefono:"+56956789012", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a6",  nombre:"Ninoska Cáceres_Axel Jelvez",   			alumno:"Damián Jelvez",   		telefono:"+56967890123", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a7",  nombre:"Allyson Roman",    						alumno:"Emiliano Silva", 		telefono:"+56978901234", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a8",  nombre:"Francisca Córdova_Kevin Olguín",    		alumno:"Ián Olguín Córdova",   	telefono:"+56989012345", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a9",  nombre:"Michelle Oses",  							alumno:"Iván Nuñez Oses",  		telefono:"+56990123456", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a10", nombre:"Ruth Galeas",  							alumno:"Josué Cancino", 		telefono:"+56901234567", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a11", nombre:"Angela Robledo",   						alumno:"Lucas Robledo", 		telefono:"+56912340000", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a12", nombre:"",    									alumno:"Valentina",   			telefono:"+56923450000", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
 ];
 
 // ─── UPLOAD MODAL ──────────────────────────────────────────────
