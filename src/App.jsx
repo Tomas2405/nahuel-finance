@@ -36,7 +36,7 @@ async function supaListar() {
   });
   if (!res.ok) return [];
   const data = await res.json();
-  return (data||[]).map(f => ({
+  return (data||[]).filter(f=>!f.name.startsWith('.')).map(f => ({
     name: f.name,
     url: `${SUPA_URL}/storage/v1/object/public/comprobantes/${f.name}`,
     created: f.created_at,
