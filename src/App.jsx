@@ -370,7 +370,17 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
   useEffect(() => {
     setDbLoading(true);
     dbCargar().then(data => {
-      if (data && data.length > 0) setTransactions(data);
+      if (data && data.length > 0) {
+        // Recalcular balance_after correctamente
+        let saldo = 0;
+        const fixed = [...data]
+          .sort((a,b)=> new Date(a.created_at)-new Date(b.created_at))
+          .map(t => {
+            saldo += t.type==="income" ? t.amount : -t.amount;
+            return {...t, balance_after: saldo};
+          });
+        setTransactions(fixed);
+      }
       setDbLoading(false);
     }).catch(() => setDbLoading(false));
   }, []);
