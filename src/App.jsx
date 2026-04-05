@@ -745,7 +745,19 @@ const Cuotas = ({ role, transactions }) => {
   const [busqueda, setBusqueda] = useState("");
 
   const totalCuotas    = apoderados.length * CUOTA_MESES.length;
-  const totalPagadas   = apoderados.reduce((s,a)=>s+Object.values(a.cuotas).filter(v=>v==="pagada").length,0);
+  // Contar pagadas: estado local O confirmado via transacción
+  const totalPagadas = apoderados.reduce((s,a) =>
+    s + CUOTA_MESES.filter(mes => {
+      const pagadaLocal = a.cuotas[mes]==="pagada";
+      const confirmadaTx = (transactions||[]).some(t=>
+        t.status==="confirmed" &&
+        t.description &&
+        t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
+        t.description.toLowerCase().includes(mes.toLowerCase())
+      );
+      return pagadaLocal || confirmadaTx;
+    }).length
+  , 0);
   const totalPendientes = totalCuotas - totalPagadas;
   const montoRecaudado = totalPagadas   * CUOTA_VALOR;
   const montoPendiente = totalPendientes * CUOTA_VALOR;
