@@ -842,7 +842,20 @@ const Cuotas = ({ role }) => {
 export default function App() {
   const [page, setPage] = useState("libro");
   const [transactions, setTransactions] = useState(MOCK_TRANSACTIONS);
-  const [user] = useState(MOCK_USER);
+  const [user, setUser] = useState(null);
+  const [showLogin, setShowLogin] = useState(true);
+  const [loginPass, setLoginPass] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const PASS = "Nahuel2025";
+  const doLogin = (asTesorera) => {
+    if (asTesorera) {
+      if (loginPass === PASS) { setUser(MOCK_USER); setShowLogin(false); }
+      else setLoginError("Contraseña incorrecta ❌");
+    } else {
+      setUser({id:"guest",name:"Apoderado",role:"parent"});
+      setShowLogin(false);
+    }
+  };
 
   const nav = [
     {id:"libro",        label:"Libro Contable", egg:"egg_white_green"},
@@ -857,6 +870,32 @@ export default function App() {
     cumpleanos:   {title:"Cumpleaños",        sub:"Fechas especiales de los estudiantes",       egg:"egg_green"},
     cuotas:       {title:"Cuotas Mensuales", sub:"Abril a Diciembre · $5.000 por mes",         egg:"egg_white_purple"},
   };
+
+  if (showLogin) return (
+    <div style={{minHeight:"100vh",background:C.bg,fontFamily:"'Nunito',system-ui,sans-serif",display:"flex",alignItems:"center",justifyContent:"center"}}>
+      <div style={{background:"#fff",borderRadius:"1.5rem",padding:"2.5rem 2rem",maxWidth:380,width:"90%",boxShadow:"0 8px 40px #3cab3c22",border:"2px solid #cdeacd",textAlign:"center"}}>
+        <img src={IMGS.yoshi} alt="Yoshi" style={{width:80,marginBottom:"1rem"}}/>
+        <h1 style={{fontSize:"1.3rem",fontWeight:"900",color:"#2d8a2d",margin:"0 0 0.25rem"}}>Medio Mayor C</h1>
+        <p style={{fontSize:"0.85rem",color:"#7aaa7a",fontWeight:"700",margin:"0 0 1.75rem"}}>Escuela de Lenguaje Nahuel 🦕</p>
+        <div style={{background:"#e8f7e8",borderRadius:"1rem",padding:"1.25rem",marginBottom:"1rem",border:"1.5px solid #cdeacd"}}>
+          <p style={{fontSize:"0.85rem",fontWeight:"800",color:"#2d8a2d",margin:"0 0 0.75rem"}}>🔐 Acceso Tesorera</p>
+          <input type="password" placeholder="Contraseña" value={loginPass}
+            onChange={e=>{setLoginPass(e.target.value);setLoginError("");}}
+            onKeyDown={e=>e.key==="Enter"&&doLogin(true)}
+            style={{width:"100%",padding:"0.65rem 0.85rem",borderRadius:"0.7rem",border:`2px solid ${loginError?"#e8302a":"#cdeacd"}`,fontFamily:"'Nunito',sans-serif",fontSize:"0.9rem",outline:"none",boxSizing:"border-box",marginBottom:"0.5rem"}}/>
+          {loginError&&<p style={{color:"#e8302a",fontSize:"0.8rem",fontWeight:"800",margin:"0 0 0.5rem"}}>{loginError}</p>}
+          <button onClick={()=>doLogin(true)}
+            style={{width:"100%",padding:"0.7rem",background:"#3cab3c",color:"#fff",border:"none",borderRadius:"0.75rem",fontWeight:"900",fontSize:"0.9rem",cursor:"pointer",fontFamily:"'Nunito',sans-serif"}}>
+            Entrar como Tesorera
+          </button>
+        </div>
+        <button onClick={()=>doLogin(false)}
+          style={{width:"100%",padding:"0.65rem",background:"#fff",color:"#3d6b3d",border:"2px solid #cdeacd",borderRadius:"0.75rem",fontWeight:"800",fontSize:"0.88rem",cursor:"pointer",fontFamily:"'Nunito',sans-serif"}}>
+          👀 Ver como Apoderado
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <div style={{minHeight:"100vh",background:C.bg,fontFamily:"'Nunito',system-ui,sans-serif"}}>
@@ -902,7 +941,7 @@ export default function App() {
                 {user.role==="treasurer"?<span style={{display:"inline-flex",alignItems:"center",gap:3}}><img src={IMGS.egg_white_green} alt="" style={{width:16,height:"auto"}}/>Tesorera</span>:"👁 Solo lectura"}
               </div>
             </div>
-            <button style={{width:36,height:36,borderRadius:"50%",background:C.greenLight,border:`2px solid ${C.border}`,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:C.greenDark}} title="Cerrar sesión">
+            <button style={{width:36,height:36,borderRadius:"50%",background:C.greenLight,border:`2px solid ${C.border}`,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:C.greenDark}} title="Cerrar sesión" onClick={()=>{setUser(null);setLoginPass("");setLoginError("");setShowLogin(true);}}>
               <Icon name="logout" size={16}/>
             </button>
           </div>
