@@ -854,8 +854,8 @@ const Cuotas = ({ role, transactions }) => {
                               alt=""
                               style={{width:26,height:"auto",opacity:pagada?1:0.65,transition:"all .2s"}}
                             />
-                            <span style={{fontSize:"0.6rem",fontWeight:"900",color:pagada?"#16a34a":C.red,lineHeight:1}}>
-                              {pagada?"✓":"✗"}
+                            <span style={{fontSize:"0.6rem",fontWeight:"900",color:estaOK?"#16a34a":C.red,lineHeight:1}}>
+                              {estaOK?"✓":"✗"}
                             </span>
                             {role==="treasurer" && pagada && (
                               <button
