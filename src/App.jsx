@@ -265,12 +265,30 @@ const Modal = ({ title, onClose, children }) => (
 const TransactionForm = ({ onSave, onClose }) => {
   const [f, setF] = useState({ date:new Date().toISOString().split("T")[0], description:"", type:"income", amount:"" });
   const set = (k,v) => setF(p=>({...p,[k]:v}));
-  const save = () => {
+  const [compFile, setCompFile] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const save = async () => {
     if(!f.description||!f.amount||!f.date) return alert("¡Completa todos los campos!");
+    setSaving(true);
     const amt = parseFloat(f.amount);
-      const newTx = {...f, amount: amt, id:"t"+Date.now(), status:"pending", receipt_url:null, created_by:MOCK_USER.name, created_at:new Date().toISOString(), balance_after: amt};
-      dbGuardar(newTx);
-      onSave(newTx);
+    let receipt_url = null;
+    if(compFile) {
+      try {
+        const limpio = f.description.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9\s]/g,"").trim().replace(/\s+/g,"_");
+        const ext = compFile.name.split(".").pop();
+        const nombre = `${limpio}_${Date.now()}.${ext}`;
+        const res = await fetch(`${SUPA_URL}/storage/v1/object/comprobantes/${nombre}`, {
+          method:"POST",
+          headers:{"Authorization":`Bearer ${SUPA_KEY}`,"Content-Type":compFile.type,"x-upsert":"true"},
+          body:compFile
+        });
+        if(res.ok) receipt_url = `${SUPA_URL}/storage/v1/object/public/comprobantes/${nombre}`;
+      } catch(e) { console.error("Error subiendo comprobante", e); }
+    }
+    const newTx = {...f, amount:amt, id:"t"+Date.now(), status:receipt_url?"confirmed":"pending", receipt_url, created_by:MOCK_USER.name, created_at:new Date().toISOString(), balance_after:amt};
+    await dbGuardar(newTx);
+    onSave(newTx);
+    setSaving(false);
     onClose();
   };
   return (
@@ -285,9 +303,19 @@ const TransactionForm = ({ onSave, onClose }) => {
         </select>
       </div>
       <div><label style={labelS}>Monto (CLP)</label><input style={inputS} type="number" placeholder="0" min="0" value={f.amount} onChange={e=>set("amount",e.target.value)}/></div>
+      <div>
+        <label style={labelS}>📎 Comprobante (opcional)</label>
+        <div style={{border:`2px dashed ${C.border}`,borderRadius:"0.75rem",padding:"1rem",background:C.greenLight,textAlign:"center"}}>
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={e=>setCompFile(e.target.files[0])} style={{fontSize:"0.82rem",fontFamily:"'Nunito',sans-serif"}}/>
+          {compFile
+            ? <p style={{margin:"0.5rem 0 0",fontSize:"0.8rem",color:C.green,fontWeight:"800"}}>✅ {compFile.name}</p>
+            : <p style={{margin:"0.5rem 0 0",fontSize:"0.75rem",color:C.textLight}}>PDF, JPG, PNG · máx. 5MB · Si subes comprobante pasa a Confirmado automáticamente</p>
+          }
+        </div>
+      </div>
       <div style={{display:"flex",gap:"0.75rem",justifyContent:"flex-end",marginTop:"0.5rem"}}>
         <button style={btnGhost} onClick={onClose}>Cancelar</button>
-        <button style={btnPrimary} onClick={save}>🦕 Guardar</button>
+        <button style={{...btnPrimary,opacity:saving?0.6:1}} onClick={save} disabled={saving}>{saving?"⏳ Guardando...":"🦕 Guardar"}</button>
       </div>
     </div>
   );
@@ -752,15 +780,25 @@ const Cuotas = ({ role }) => {
                     </td>
                     {CUOTA_MESES.map(mes=>{
                       const pagada = a.cuotas[mes]==="pagada";
+                      // Check if there's a confirmed transaction for this apoderado+mes
+                      const txMatch = (transactions||[]).find(t=>
+                        t.status==="confirmed" &&
+                        t.description &&
+                        t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
+                        t.description.toLowerCase().includes(mes.toLowerCase())
+                      );
+                      const tieneComprobante = txMatch && txMatch.receipt_url;
+                      const confirmadoPorTx = !!txMatch;
+                      const estaOK = pagada || confirmadoPorTx;
                       return (
                         <td key={mes} style={{padding:"0.45rem 0.3rem",textAlign:"center"}}>
                           <div
-                            onClick={()=>toggleCuota(a.id,mes)}
-                            style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"0.15rem",cursor:role==="treasurer"?"pointer":"default"}}
-                            title={role==="treasurer"?(pagada?"Marcar pendiente · 📎 Adjuntar":"Marcar como pagada"):undefined}
+                            onClick={()=>!confirmadoPorTx&&toggleCuota(a.id,mes)}
+                            style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"0.15rem",cursor:(role==="treasurer"&&!confirmadoPorTx)?"pointer":"default"}}
+                            title={confirmadoPorTx?"✅ Confirmado desde Libro Contable":(role==="treasurer"?(estaOK?"Marcar pendiente":"Marcar como pagada"):undefined)}
                           >
                             <img
-                              src={IMGS[pagada?"egg_white_green":"egg_white_red"]}
+                              src={IMGS[tieneComprobante?"egg_green":(estaOK?"egg_white_green":"egg_white_red")]}
                               alt=""
                               style={{width:26,height:"auto",opacity:pagada?1:0.65,transition:"all .2s"}}
                             />
@@ -968,7 +1006,7 @@ export default function App() {
         {page==="libro"        && <LibroContable transactions={transactions} setTransactions={setTransactions} role={user.role}/>}
         {page==="comprobantes" && <Comprobantes transactions={transactions}/>}
         {page==="cumpleanos"   && <Cumpleanos/>}
-        {page==="cuotas"       && <Cuotas role={user.role}/>}
+        {page==="cuotas"       && <Cuotas role={user.role} transactions={transactions}/>}
       </main>
 
       {/* Footer */}
