@@ -267,14 +267,25 @@ const TransactionForm = ({ onSave, onClose }) => {
   const set = (k,v) => setF(p=>({...p,[k]:v}));
   const [compFile, setCompFile] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [esCuota, setEsCuota] = useState(false);
+  const [alumnoSel, setAlumnoSel] = useState("");
+  const [mesSel, setMesSel] = useState(CUOTA_MESES[0]);
+
   const save = async () => {
-    if(!f.description||!f.amount||!f.date) return alert("¡Completa todos los campos!");
+    // Auto-generar descripción si es cuota
+    let desc = f.description;
+    if(esCuota && alumnoSel) {
+      const ap = MOCK_APODERADOS.find(a=>a.alumno===alumnoSel);
+      desc = `Cuota ${mesSel} - ${alumnoSel}`;
+      set("description", desc);
+    }
+    if(!desc||!f.amount||!f.date) return alert("¡Completa todos los campos!");
     setSaving(true);
     const amt = parseFloat(f.amount);
     let receipt_url = null;
     if(compFile) {
       try {
-        const limpio = f.description.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9\s]/g,"").trim().replace(/\s+/g,"_");
+        const limpio = desc.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9\s]/g,"").trim().replace(/\s+/g,"_");
         const ext = compFile.name.split(".").pop();
         const nombre = `${limpio}_${Date.now()}.${ext}`;
         const res = await fetch(`${SUPA_URL}/storage/v1/object/comprobantes/${nombre}`, {
@@ -285,7 +296,7 @@ const TransactionForm = ({ onSave, onClose }) => {
         if(res.ok) receipt_url = `${SUPA_URL}/storage/v1/object/public/comprobantes/${nombre}`;
       } catch(e) { console.error("Error subiendo comprobante", e); }
     }
-    const newTx = {...f, amount:amt, id:"t"+Date.now(), status:receipt_url?"confirmed":"pending", receipt_url, created_by:MOCK_USER.name, created_at:new Date().toISOString(), balance_after:amt};
+    const newTx = {...f, description:desc, amount:amt, id:"t"+Date.now(), status:receipt_url?"confirmed":"pending", receipt_url, created_by:MOCK_USER.name, created_at:new Date().toISOString(), balance_after:amt};
     await dbGuardar(newTx);
     onSave(newTx);
     setSaving(false);
@@ -294,10 +305,45 @@ const TransactionForm = ({ onSave, onClose }) => {
   return (
     <div style={{display:"flex",flexDirection:"column",gap:"1rem"}}>
       <div><label style={labelS}>Fecha</label><input style={inputS} type="date" value={f.date} onChange={e=>set("date",e.target.value)}/></div>
-      <div><label style={labelS}>Descripción</label><input style={inputS} placeholder="Ej: Cuota mayo apoderados" value={f.description} onChange={e=>set("description",e.target.value)}/></div>
+
+      {/* Toggle cuota vs otro */}
+      <div style={{display:"flex",gap:"0.5rem"}}>
+        <button onClick={()=>setEsCuota(false)} style={{...inputS,flex:1,cursor:"pointer",fontWeight:"800",background:!esCuota?C.green:"#fff",color:!esCuota?"#fff":C.textMid,border:`2px solid ${!esCuota?C.green:C.border}`,padding:"0.5rem"}}>
+          🍄 Otro movimiento
+        </button>
+        <button onClick={()=>{setEsCuota(true);set("type","income");set("amount","5000");}} style={{...inputS,flex:1,cursor:"pointer",fontWeight:"800",background:esCuota?C.green:"#fff",color:esCuota?"#fff":C.textMid,border:`2px solid ${esCuota?C.green:C.border}`,padding:"0.5rem"}}>
+          🥚 Pago de Cuota
+        </button>
+      </div>
+
+      {esCuota ? (
+        <>
+          <div>
+            <label style={labelS}>Alumno</label>
+            <select style={inputS} value={alumnoSel} onChange={e=>setAlumnoSel(e.target.value)}>
+              <option value="">— Selecciona alumno —</option>
+              {MOCK_APODERADOS.map(a=>(
+                <option key={a.id} value={a.alumno}>{a.alumno} ({a.nombre||"Sin apoderado"})</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label style={labelS}>Mes</label>
+            <select style={inputS} value={mesSel} onChange={e=>setMesSel(e.target.value)}>
+              {CUOTA_MESES.map(m=><option key={m} value={m}>{m}</option>)}
+            </select>
+          </div>
+          <div style={{background:C.greenLight,border:`1.5px solid ${C.border}`,borderRadius:"0.75rem",padding:"0.75rem",fontSize:"0.82rem",color:C.greenDark,fontWeight:"800"}}>
+            📝 Descripción generada: <strong>Cuota {mesSel} - {alumnoSel||"..."}</strong>
+          </div>
+        </>
+      ) : (
+        <div><label style={labelS}>Descripción</label><input style={inputS} placeholder="Ej: Compra materiales" value={f.description} onChange={e=>set("description",e.target.value)}/></div>
+      )}
+
       <div>
         <label style={labelS}>Tipo</label>
-        <select style={inputS} value={f.type} onChange={e=>set("type",e.target.value)}>
+        <select style={inputS} value={f.type} onChange={e=>set("type",e.target.value)} disabled={esCuota}>
           <option value="income">🥚 Ingreso</option>
           <option value="expense">🍄 Egreso</option>
         </select>
