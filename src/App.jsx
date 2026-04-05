@@ -88,28 +88,28 @@ const C = {
 const MOCK_USER = { id: "u1", name: "Lucia Araos", role: "treasurer", email: "lucia.camila@gmail.com" };
 
 const MOCK_TRANSACTIONS = [
-  { id:"t1", date:"2025-03-10", description:"Cuota marzo - 12 apoderados",     type:"income",  amount:60000, balance_after:60000,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-03-10T10:00:00Z" },
-  { id:"t2", date:"2025-03-15", description:"Compra materiales didácticos",     type:"expense", amount:18500, balance_after:41500,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-03-15T14:30:00Z" },
-  { id:"t3", date:"2025-03-22", description:"Decoración Día del Alumno",        type:"expense", amount:12000, balance_after:29500,  status:"confirmed", receipt_url:null,created_by:"Valentina Rojas", created_at:"2025-03-22T09:15:00Z" },
-  { id:"t4", date:"2025-04-05", description:"Cuota abril - 11 apoderados",      type:"income",  amount:55000, balance_after:84500,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-04-05T11:00:00Z" },
-  { id:"t5", date:"2025-04-18", description:"Fotocopia pruebas evaluación",     type:"expense", amount:3200,  balance_after:81300,  status:"pending",   receipt_url:null,created_by:"Valentina Rojas", created_at:"2025-04-18T16:00:00Z" },
-  { id:"t6", date:"2025-05-02", description:"Cuota mayo - 10 apoderados",       type:"income",  amount:50000, balance_after:131300, status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-05-02T10:30:00Z" },
-  { id:"t7", date:"2025-05-20", description:"Paseo educativo Jardín Botánico",  type:"expense", amount:45000, balance_after:86300,  status:"confirmed", receipt_url:"#", created_by:"Valentina Rojas", created_at:"2025-05-20T08:00:00Z" },
+  { id:"t1", date:"2026-03-30", description:"Cuota Abril - Josué Cancino",        type:"income",  amount:5000, balance_after:60000,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-03-10T10:00:00Z" },
+  { id:"t2", date:"2026-03-31", description:"Couta Abril - Belén Fernández",      type:"income",  amount:5000, balance_after:41500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-03-15T14:30:00Z" },
+  { id:"t3", date:"2026-03-31", description:"Couta Abril - Ián Olgúin",           type:"income",  amount:5000, balance_after:29500,  status:"confirmed", receipt_url:null,created_by:"Lucia Araos", created_at:"2025-03-22T09:15:00Z" },
+  { id:"t4", date:"2026-03-31", description:"Cuota Abril - Iván Nuñez",           type:"income",  amount:5000, balance_after:84500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-04-05T11:00:00Z" },
+  { id:"t5", date:"2026-03-31", description:"Cuota Abril - Lucas Robledo",        type:"income",  amount:5000, balance_after:81300,  status:"pending",   receipt_url:null,created_by:"Lucia Araos", created_at:"2025-04-18T16:00:00Z" },
+  { id:"t6", date:"2026-04-01", description:"Cuota Abril - Damián Jelvez",        type:"income",  amount:5000, balance_after:131300, status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-05-02T10:30:00Z" },
+  { id:"t7", date:"2025-05-20", description:"Couta Abril - Camilo Fuentes",       type:"income",  amount:5000, balance_after:86300,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2025-05-20T08:00:00Z" },
 ];
 
 const MOCK_STUDENTS = [
-  { id:"s1",  full_name:"Sofía Méndez Araya",     birth_date:"2020-01-14", guardian:"Andrea Araya",    guardian_phone:"+56912345678" },
-  { id:"s2",  full_name:"Mateo González Torres",  birth_date:"2020-03-22", guardian:"Carlos González", guardian_phone:"+56923456789" },
-  { id:"s3",  full_name:"Valentina Soto Pérez",   birth_date:"2020-04-05", guardian:"Mónica Pérez",    guardian_phone:"+56934567890" },
-  { id:"s4",  full_name:"Nicolás Fuentes Mora",   birth_date:"2020-02-18", guardian:"Rodrigo Fuentes", guardian_phone:"+56945678901" },
-  { id:"s5",  full_name:"Isabella Rojas Vega",    birth_date:"2020-06-30", guardian:"Camila Vega",     guardian_phone:"+56956789012" },
-  { id:"s6",  full_name:"Emilio Castro Díaz",     birth_date:"2020-07-12", guardian:"Patricia Díaz",   guardian_phone:"+56967890123" },
-  { id:"s7",  full_name:"Antonia Navarro Silva",  birth_date:"2020-08-25", guardian:"Juan Navarro",    guardian_phone:"+56978901234" },
-  { id:"s8",  full_name:"Tomás Herrera Lagos",    birth_date:"2020-09-08", guardian:"Sandra Lagos",    guardian_phone:"+56989012345" },
-  { id:"s9",  full_name:"Renata Morales Ibáñez",  birth_date:"2020-10-19", guardian:"Felipe Morales",  guardian_phone:"+56990123456" },
-  { id:"s10", full_name:"Benjamín Ortega Rivas",  birth_date:"2020-11-03", guardian:"Verónica Rivas",  guardian_phone:"+56901234567" },
-  { id:"s11", full_name:"Catalina Vargas Mena",   birth_date:"2020-12-28", guardian:"Héctor Vargas",   guardian_phone:"+56912340000" },
-  { id:"s12", full_name:"Agustín Reyes Pinto",    birth_date:"2020-05-17", guardian:"Lorena Pinto",    guardian_phone:"+56923450000" },
+  { id:"s1",  full_name:"Agatha",     				birth_date:"2022-07-20", guardian:"Franciso",    							guardian_phone:"+56912345678" },
+  { id:"s2",  full_name:"Agustin",  				birth_date:"2022-12-04", guardian:"", 										guardian_phone:"+56923456789" },
+  { id:"s3",  full_name:"Alondra Arancibia",   		birth_date:"", 			 guardian:"",    									guardian_phone:"+56934567890" },
+  { id:"s4",  full_name:"Belén Fernandéz",   		birth_date:"2022-08-28", guardian:"Katherine González / Pablo Fernández", 	guardian_phone:"+56945678901" },
+  { id:"s5",  full_name:"Camilo Fuentes Araos",    	birth_date:"2022-11-22", guardian:"Lucia Araos / Tomás Fuentes",     		guardian_phone:"+56956789012" },
+  { id:"s6",  full_name:"Damián Jelvez",     		birth_date:"2022-05-15", guardian:"Ninoska Cáceres / Axel Jeldez",   		guardian_phone:"+56967890123" },
+  { id:"s7",  full_name:"Emiliano Silva",  			birth_date:"2022-11-21", guardian:"Allyson Roman",    						guardian_phone:"+56978901234" },
+  { id:"s8",  full_name:"Ián Olguín Córdova",    	birth_date:"2022-10-27", guardian:"Francisca Córdova / Kevin Olguín",    	guardian_phone:"+56989012345" },
+  { id:"s9",  full_name:"Iván Nuñez Oses",  		birth_date:"2023-03-02", guardian:"Michelle Oses",  						guardian_phone:"+56990123456" },
+  { id:"s10", full_name:"Josué Cancino",  			birth_date:"2022-11-11", guardian:"Ruth Galeas",  							guardian_phone:"+56901234567" },
+  { id:"s11", full_name:"Lucas Robledo",   			birth_date:"2022-04-08", guardian:"Angela Robledo",   						guardian_phone:"+56912340000" },
+  { id:"s12", full_name:"Valentina",    			birth_date:"2022-10-06", guardian:"",    									guardian_phone:"+56923450000" },
 ];
 
 const MONTHS_ES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
