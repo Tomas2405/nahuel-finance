@@ -87,15 +87,7 @@ const C = {
 // ─── MOCK DATA ────────────────────────────────────────────────
 const MOCK_USER = { id: "u1", name: "Lucia Araos", role: "treasurer", email: "lucia.camila@gmail.com" };
 
-const MOCK_TRANSACTIONS = [
-  { id:"t1", date:"2026-03-30", description:"Cuota Abril - Josué Cancino",        type:"income",  amount:5000, balance_after:60000,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T10:00:00Z" },
-  { id:"t2", date:"2026-03-31", description:"Couta Abril - Belén Fernández",      type:"income",  amount:5000, balance_after:41500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T14:30:00Z" },
-  { id:"t3", date:"2026-03-31", description:"Couta Abril - Ián Olgúin",           type:"income",  amount:5000, balance_after:29500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T09:15:00Z" },
-  { id:"t4", date:"2026-03-31", description:"Cuota Abril - Iván Nuñez",           type:"income",  amount:5000, balance_after:84500,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T11:00:00Z" },
-  { id:"t5", date:"2026-03-31", description:"Cuota Abril - Lucas Robledo",        type:"income",  amount:5000, balance_after:81300,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T16:00:00Z" },
-  { id:"t6", date:"2026-04-01", description:"Cuota Abril - Damián Jelvez",        type:"income",  amount:5000, balance_after:131300, status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T10:30:00Z" },
-  { id:"t7", date:"2026-04-04", description:"Couta Abril - Camilo Fuentes",       type:"income",  amount:5000, balance_after:86300,  status:"confirmed", receipt_url:"#", created_by:"Lucia Araos", created_at:"2026-04-04T08:00:00Z" },
-];
+const MOCK_TRANSACTIONS = [];
 
 const MOCK_STUDENTS = [
   { id:"s1",  full_name:"Agatha",     				birth_date:"2022-07-20", guardian:"Franciso",    							guardian_phone:"+56912345678" },
