@@ -145,14 +145,14 @@ const MOCK_USER = { id: "u1", name: "Lucia Araos", role: "treasurer", email: "lu
 const MOCK_TRANSACTIONS = [];
 
 const MOCK_STUDENTS = [
-  { id:"s1",  full_name:"Agatha",     				birth_date:"2022-07-20", guardian:"Franciso",    							guardian_phone:"+56912345678" },
+  { id:"s1",  full_name:"Agatha Martínez",     		birth_date:"2022-07-20", guardian:"Franciso Martinez",    					guardian_phone:"+56912345678" },
   { id:"s2",  full_name:"Agustin",  				birth_date:"2022-12-04", guardian:"", 										guardian_phone:"+56923456789" },
   { id:"s3",  full_name:"Alondra Arancibia",   		birth_date:"", 			 guardian:"",    									guardian_phone:"+56934567890" },
   { id:"s4",  full_name:"Belén Fernandéz",   		birth_date:"2022-08-28", guardian:"Katherine González_Pablo Fernández", 	guardian_phone:"+56945678901" },
-  { id:"s5",  full_name:"Camilo Fuentes Araos",    	birth_date:"2022-11-22", guardian:"Lucia Araos_Tomás Fuentes",     		guardian_phone:"+56956789012" },
-  { id:"s6",  full_name:"Damián Jelvez",     		birth_date:"2022-05-15", guardian:"Ninoska Cáceres_Axel Jeldez",   		guardian_phone:"+56967890123" },
+  { id:"s5",  full_name:"Camilo Fuentes Araos",    	birth_date:"2022-11-22", guardian:"Lucia Araos_Tomás Fuentes",     			guardian_phone:"+56956789012" },
+  { id:"s6",  full_name:"Damián Jelvez",     		birth_date:"2022-05-15", guardian:"Ninoska Cáceres_Axel Jeldez",   			guardian_phone:"+56967890123" },
   { id:"s7",  full_name:"Emiliano Silva",  			birth_date:"2022-11-21", guardian:"Allyson Roman",    						guardian_phone:"+56978901234" },
-  { id:"s8",  full_name:"Ián Olguín Córdova",    	birth_date:"2022-10-27", guardian:"Francisca Córdova_Kevin Olguín",    	guardian_phone:"+56989012345" },
+  { id:"s8",  full_name:"Ián Olguín Córdova",    	birth_date:"2022-10-27", guardian:"Francisca Córdova_Kevin Olguín",    		guardian_phone:"+56989012345" },
   { id:"s9",  full_name:"Iván Nuñez Oses",  		birth_date:"2023-03-02", guardian:"Michelle Oses",  						guardian_phone:"+56990123456" },
   { id:"s10", full_name:"Josué Cancino",  			birth_date:"2022-11-11", guardian:"Ruth Galeas",  							guardian_phone:"+56901234567" },
   { id:"s11", full_name:"Lucas Robledo",   			birth_date:"2022-04-08", guardian:"Angela Robledo",   						guardian_phone:"+56912340000" },
@@ -682,7 +682,7 @@ const CUOTA_MESES = ["Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octub
 const CUOTA_VALOR = 5000;
 
 const MOCK_APODERADOS = [
-  { id:"a1",  nombre:"Francisco",    							alumno:"Agatha",    			telefono:"+56912345678", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a1",  nombre:"Francisco Martínez",    					alumno:"Agatha Martínez",    	telefono:"+56912345678", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a2",  nombre:"", 										alumno:"Agustín",  				telefono:"+56923456789", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a3",  nombre:"",    									alumno:"Alondra Arancibia",  	telefono:"+56934567890", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a4",  nombre:"Katherine González_Pablo Fernandéz", 		alumno:"Belén Fernandéz", 		telefono:"+56945678901", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
