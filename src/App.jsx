@@ -828,7 +828,15 @@ const Cuotas = ({ role, transactions }) => {
             </thead>
             <tbody>
               {filtrados.map((a,idx)=>{
-                const pagadas = Object.values(a.cuotas).filter(v=>v==="pagada").length;
+                const pagadas = CUOTA_MESES.filter(mes => {
+                  const pagadaLocal = a.cuotas[mes]==="pagada";
+                  const confirmadaTx = (transactions||[]).some(t=>
+                    t.status==="confirmed" && t.description &&
+                    t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
+                    t.description.toLowerCase().includes(mes.toLowerCase())
+                  );
+                  return pagadaLocal || confirmadaTx;
+                }).length;
                 const total   = CUOTA_MESES.length;
                 const pct     = Math.round((pagadas/total)*100);
                 const completo = pagadas === total;
@@ -895,7 +903,15 @@ const Cuotas = ({ role, transactions }) => {
                   TOTALES
                 </td>
                 {CUOTA_MESES.map(mes=>{
-                  const n = apoderados.filter(a=>a.cuotas[mes]==="pagada").length;
+                  const n = apoderados.filter(a => {
+                    const pagadaLocal = a.cuotas[mes]==="pagada";
+                    const confirmadaTx = (transactions||[]).some(t=>
+                      t.status==="confirmed" && t.description &&
+                      t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
+                      t.description.toLowerCase().includes(mes.toLowerCase())
+                    );
+                    return pagadaLocal || confirmadaTx;
+                  }).length;
                   const all = n===apoderados.length;
                   return (
                     <td key={mes} style={{padding:"0.85rem 0.3rem",textAlign:"center"}}>
