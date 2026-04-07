@@ -302,7 +302,7 @@ const TransactionForm = ({ onSave, onClose }) => {
         <button onClick={()=>setEsCuota(false)} style={{...inputS,flex:1,cursor:"pointer",fontWeight:"800",background:!esCuota?C.green:"#fff",color:!esCuota?"#fff":C.textMid,border:`2px solid ${!esCuota?C.green:C.border}`,padding:"0.5rem"}}>
           🍄 Otro movimiento
         </button>
-        <button onClick={()=>{setEsCuota(true);set("type","income");set("amount","5000");}} style={{...inputS,flex:1,cursor:"pointer",fontWeight:"800",background:esCuota?C.green:"#fff",color:esCuota?"#fff":C.textMid,border:`2px solid ${esCuota?C.green:C.border}`,padding:"0.5rem"}}>
+        <button onClick={()=>{setEsCuota(true);set("type","income");set("amount","");}} style={{...inputS,flex:1,cursor:"pointer",fontWeight:"800",background:esCuota?C.green:"#fff",color:esCuota?"#fff":C.textMid,border:`2px solid ${esCuota?C.green:C.border}`,padding:"0.5rem"}}>
           🥚 Pago de Cuota
         </button>
       </div>
@@ -830,12 +830,12 @@ const Cuotas = ({ role, transactions }) => {
               {filtrados.map((a,idx)=>{
                 const pagadas = CUOTA_MESES.filter(mes => {
                   const pagadaLocal = a.cuotas[mes]==="pagada";
-                  const confirmadaTx = (transactions||[]).some(t=>
-                    t.status==="confirmed" && t.description &&
-                    t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
-                    t.description.toLowerCase().includes(mes.toLowerCase())
-                  );
-                  return pagadaLocal || confirmadaTx;
+                  const totalAbonadoMes = (transactions||[])
+                    .filter(t=> t.type==="income" && t.description &&
+                      t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
+                      t.description.toLowerCase().includes(mes.toLowerCase()))
+                    .reduce((s,t)=>s+t.amount, 0);
+                  return pagadaLocal || totalAbonadoMes >= CUOTA_VALOR;
                 }).length;
                 const total   = CUOTA_MESES.length;
                 const pct     = Math.round((pagadas/total)*100);
@@ -851,15 +851,20 @@ const Cuotas = ({ role, transactions }) => {
                     {CUOTA_MESES.map(mes=>{
                       const pagada = a.cuotas[mes]==="pagada";
                       // Check if there's a confirmed transaction for this apoderado+mes
-                      const txMatch = (transactions||[]).find(t=>
-                        t.status==="confirmed" &&
+                      // Buscar TODOS los pagos para este alumno+mes
+                      const txsMes = (transactions||[]).filter(t=>
+                        t.type==="income" &&
                         t.description &&
                         t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
                         t.description.toLowerCase().includes(mes.toLowerCase())
                       );
-                      const tieneComprobante = txMatch && txMatch.receipt_url;
-                      const confirmadoPorTx = !!txMatch;
-                      const estaOK = pagada || confirmadoPorTx;
+                      const totalAbonado = txsMes.reduce((s,t)=>s+t.amount, 0);
+                      const txConfirmada = txsMes.find(t=>t.status==="confirmed");
+                      const tieneComprobante = txConfirmada && txConfirmada.receipt_url;
+                      const pagadoCompleto = pagada || totalAbonado >= CUOTA_VALOR;
+                      const tieneAbono = totalAbonado > 0 && totalAbonado < CUOTA_VALOR;
+                      const confirmadoPorTx = totalAbonado >= CUOTA_VALOR;
+                      const estaOK = pagadoCompleto;
                       return (
                         <td key={mes} style={{padding:"0.45rem 0.3rem",textAlign:"center"}}>
                           <div
@@ -868,13 +873,18 @@ const Cuotas = ({ role, transactions }) => {
                             title={confirmadoPorTx?"✅ Confirmado desde Libro Contable":(role==="treasurer"?(estaOK?"Marcar pendiente":"Marcar como pagada"):undefined)}
                           >
                             <img
-                              src={IMGS[tieneComprobante?"egg_green":(estaOK?"egg_white_green":"egg_white_red")]}
+                              src={IMGS[tieneComprobante?"egg_green":(pagadoCompleto?"egg_white_green":(tieneAbono?"egg_white_yellow":"egg_white_red"))]}
                               alt=""
-                              style={{width:26,height:"auto",opacity:pagada?1:0.65,transition:"all .2s"}}
+                              style={{width:26,height:"auto",opacity:(pagadoCompleto||tieneAbono)?1:0.65,transition:"all .2s"}}
                             />
-                            <span style={{fontSize:"0.6rem",fontWeight:"900",color:estaOK?"#16a34a":C.red,lineHeight:1}}>
-                              {estaOK?"✓":"✗"}
+                            <span style={{fontSize:"0.6rem",fontWeight:"900",color:pagadoCompleto?"#16a34a":(tieneAbono?C.yellow:C.red),lineHeight:1}}>
+                              {pagadoCompleto?"✓":(tieneAbono?"~":"✗")}
                             </span>
+                            {tieneAbono && (
+                                <div style={{fontSize:"0.55rem",fontWeight:"900",color:C.yellow,lineHeight:1,marginTop:"0.1rem"}}>
+                                  ${totalAbonado.toLocaleString("es-CL")}
+                                </div>
+                              )}
                             {role==="treasurer" && pagada && (
                               <button
                                 onClick={e=>{e.stopPropagation();setUploadTarget({apoderado:a.nombre,mes});}}
