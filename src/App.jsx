@@ -745,7 +745,7 @@ const UploadModal = ({ apoderado, mes, onClose }) => {
   );
 };
 
-// ─── PAGE 4: CUOTAS ────────────────────────────────────────────
+// ─── PAGE 4: CUOTAS (v2) ────────────────────────────────────────────
 const Cuotas = ({ role, transactions }) => {
   // Función para normalizar strings (quita tildes y pasa a minúsculas)
   const norm = s => (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
@@ -758,12 +758,11 @@ const Cuotas = ({ role, transactions }) => {
   const totalPagadas = apoderados.reduce((s,a) =>
     s + CUOTA_MESES.filter(mes => {
       const pagadaLocal = a.cuotas[mes]==="pagada";
-      const confirmadaTx = (transactions||[]).some(t=>
-        t.status==="confirmed" &&
-        t.description &&
-        t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
-        t.description.toLowerCase().includes(mes.toLowerCase())
-      );
+      const totalK = (transactions||[])
+        .filter(t=> (t.type==="income"||t.type==="abono") && t.status==="confirmed" && t.description &&
+          norm(t.description).includes(norm(a.alumno)) &&
+          norm(t.description).includes(norm(mes)))
+        .reduce((s,t)=>s+t.amount, 0);
       return pagadaLocal || totalK >= CUOTA_VALOR;
     }).length
   , 0);
@@ -774,9 +773,9 @@ const Cuotas = ({ role, transactions }) => {
       const pagadaLocal = a.cuotas[mes]==="pagada";
       if(pagadaLocal) return s + CUOTA_VALOR;
       const abonado = (transactions||[])
-        .filter(t=> t.type==="income" && t.status==="confirmed" && t.description &&
-          t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
-          t.description.toLowerCase().includes(mes.toLowerCase()))
+        .filter(t=> (t.type==="income"||t.type==="abono") && t.status==="confirmed" && t.description &&
+          norm(t.description).includes(norm(a.alumno)) &&
+          norm(t.description).includes(norm(mes)))
         .reduce((acc,t)=>acc+t.amount, 0);
       return s + Math.min(abonado, CUOTA_VALOR);
     }, 0)
