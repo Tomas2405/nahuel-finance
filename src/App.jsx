@@ -831,7 +831,7 @@ const Cuotas = ({ role, transactions }) => {
                 const pagadas = CUOTA_MESES.filter(mes => {
                   const pagadaLocal = a.cuotas[mes]==="pagada";
                   const totalAbonadoMes = (transactions||[])
-                    .filter(t=> t.type==="income" && t.description &&
+                    .filter(t=> t.type==="income" && t.status==="confirmed" && t.description &&
                       t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
                       t.description.toLowerCase().includes(mes.toLowerCase()))
                     .reduce((s,t)=>s+t.amount, 0);
@@ -854,6 +854,7 @@ const Cuotas = ({ role, transactions }) => {
                       // Buscar TODOS los pagos para este alumno+mes
                       const txsMes = (transactions||[]).filter(t=>
                         t.type==="income" &&
+                        t.status==="confirmed" &&
                         t.description &&
                         t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
                         t.description.toLowerCase().includes(mes.toLowerCase())
@@ -915,12 +916,12 @@ const Cuotas = ({ role, transactions }) => {
                 {CUOTA_MESES.map(mes=>{
                   const n = apoderados.filter(a => {
                     const pagadaLocal = a.cuotas[mes]==="pagada";
-                    const confirmadaTx = (transactions||[]).some(t=>
-                      t.status==="confirmed" && t.description &&
-                      t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
-                      t.description.toLowerCase().includes(mes.toLowerCase())
-                    );
-                    return pagadaLocal || confirmadaTx;
+                    const totalAbonadoMes = (transactions||[])
+                      .filter(t=> t.type==="income" && t.status==="confirmed" && t.description &&
+                        t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
+                        t.description.toLowerCase().includes(mes.toLowerCase()))
+                      .reduce((s,t)=>s+t.amount, 0);
+                    return pagadaLocal || totalAbonadoMes >= CUOTA_VALOR;
                   }).length;
                   const all = n===apoderados.length;
                   return (
