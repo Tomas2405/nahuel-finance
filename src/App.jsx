@@ -756,12 +756,12 @@ const Cuotas = ({ role, transactions }) => {
   const totalPagadas = apoderados.reduce((s,a) =>
     s + CUOTA_MESES.filter(mes => {
       const pagadaLocal = a.cuotas[mes]==="pagada";
-      const confirmadaTx = (transactions||[]).some(t=>
-        t.status==="confirmed" &&
-        t.description &&
-        t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
-        t.description.toLowerCase().includes(mes.toLowerCase())
-      );
+      const normK = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+      const totalK = (transactions||[])
+        .filter(t=> (t.type==="income"||t.type==="abono") && t.status==="confirmed" && t.description &&
+          normK(t.description).includes(normK(a.alumno)) &&
+          normK(t.description).includes(normK(mes)))
+        .reduce((s,t)=>s+t.amount, 0);
       return pagadaLocal || totalK >= CUOTA_VALOR;
     }).length
   , 0);
@@ -771,10 +771,11 @@ const Cuotas = ({ role, transactions }) => {
     sum + CUOTA_MESES.reduce((s, mes) => {
       const pagadaLocal = a.cuotas[mes]==="pagada";
       if(pagadaLocal) return s + CUOTA_VALOR;
+      const normMR = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
       const abonado = (transactions||[])
-        .filter(t=> t.type==="income" && t.status==="confirmed" && t.description &&
-          t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
-          t.description.toLowerCase().includes(mes.toLowerCase()))
+        .filter(t=> (t.type==="income"||t.type==="abono") && t.status==="confirmed" && t.description &&
+          normMR(t.description).includes(normMR(a.alumno)) &&
+          normMR(t.description).includes(normMR(mes)))
         .reduce((acc,t)=>acc+t.amount, 0);
       return s + Math.min(abonado, CUOTA_VALOR);
     }, 0)
