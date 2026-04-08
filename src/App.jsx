@@ -881,18 +881,20 @@ const Cuotas = ({ role, transactions }) => {
                       // Check if there's a confirmed transaction for this apoderado+mes
                       // Buscar TODOS los pagos para este alumno+mes
                       // Todos los pagos (para mostrar huevo amarillo aunque estén pendientes)
+                      // Buscar income (cuota completa) Y abonos para este alumno+mes
                       const txsMes = (transactions||[]).filter(t=>
-                        t.type==="income" &&
+                        (t.type==="income" || t.type==="abono") &&
                         t.description &&
                         t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
                         t.description.toLowerCase().includes(mes.toLowerCase())
                       );
-                      // Solo confirmados para calcular montos
                       const txsConfirmadas = txsMes.filter(t=>t.status==="confirmed");
+                      // Suma TODOS los abonos y pagos completos confirmados
                       const totalAbonado = txsConfirmadas.reduce((s,t)=>s+t.amount, 0);
                       const totalTodos = txsMes.reduce((s,t)=>s+t.amount, 0);
-                      const txConfirmada = txsConfirmadas[0];
-                      const tieneComprobante = txConfirmada && txConfirmada.receipt_url;
+                      const txConfirmada = txsConfirmadas.find(t=>t.receipt_url);
+                      const tieneComprobante = !!txConfirmada?.receipt_url;
+                      // Verde si suma >= 5000, amarillo si hay algo pero menos de 5000
                       const pagadoCompleto = pagada || totalAbonado >= CUOTA_VALOR;
                       const tieneAbono = totalTodos > 0 && !pagadoCompleto;
                       const confirmadoPorTx = totalAbonado >= CUOTA_VALOR;
