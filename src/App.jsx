@@ -915,7 +915,7 @@ const Cuotas = ({ role, transactions }) => {
                             title={confirmadoPorTx?"✅ Confirmado desde Libro Contable":(role==="treasurer"?(estaOK?"Marcar pendiente":"Marcar como pagada"):undefined)}
                           >
                             <img
-                              src={IMGS[tieneComprobante?"egg_green":(pagadoCompleto?"egg_white_green":(tieneAbono?"egg_white_yellow":"egg_white_red"))]}
+                              src={IMGS[(tieneComprobante&&pagadoCompleto)?"egg_green":(pagadoCompleto?"egg_white_green":(tieneAbono?"egg_white_yellow":"egg_white_red"))]}
                               alt=""
                               style={{width:26,height:"auto",opacity:(pagadoCompleto||tieneAbono)?1:0.65,transition:"all .2s"}}
                             />
