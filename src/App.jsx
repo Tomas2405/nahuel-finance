@@ -747,6 +747,8 @@ const UploadModal = ({ apoderado, mes, onClose }) => {
 
 // ─── PAGE 4: CUOTAS ────────────────────────────────────────────
 const Cuotas = ({ role, transactions }) => {
+  // Función para normalizar strings (quita tildes y pasa a minúsculas)
+  const norm = s => (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
   const [apoderados, setApoderados] = useState(MOCK_APODERADOS);
   const [uploadTarget, setUploadTarget] = useState(null);
   const [busqueda, setBusqueda] = useState("");
@@ -756,12 +758,12 @@ const Cuotas = ({ role, transactions }) => {
   const totalPagadas = apoderados.reduce((s,a) =>
     s + CUOTA_MESES.filter(mes => {
       const pagadaLocal = a.cuotas[mes]==="pagada";
-      const normK = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-      const totalK = (transactions||[])
-        .filter(t=> (t.type==="income"||t.type==="abono") && t.status==="confirmed" && t.description &&
-          normK(t.description).includes(normK(a.alumno)) &&
-          normK(t.description).includes(normK(mes)))
-        .reduce((s,t)=>s+t.amount, 0);
+      const confirmadaTx = (transactions||[]).some(t=>
+        t.status==="confirmed" &&
+        t.description &&
+        t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
+        t.description.toLowerCase().includes(mes.toLowerCase())
+      );
       return pagadaLocal || totalK >= CUOTA_VALOR;
     }).length
   , 0);
@@ -771,11 +773,10 @@ const Cuotas = ({ role, transactions }) => {
     sum + CUOTA_MESES.reduce((s, mes) => {
       const pagadaLocal = a.cuotas[mes]==="pagada";
       if(pagadaLocal) return s + CUOTA_VALOR;
-      const normMR = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
       const abonado = (transactions||[])
-        .filter(t=> (t.type==="income"||t.type==="abono") && t.status==="confirmed" && t.description &&
-          normMR(t.description).includes(normMR(a.alumno)) &&
-          normMR(t.description).includes(normMR(mes)))
+        .filter(t=> t.type==="income" && t.status==="confirmed" && t.description &&
+          t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
+          t.description.toLowerCase().includes(mes.toLowerCase()))
         .reduce((acc,t)=>acc+t.amount, 0);
       return s + Math.min(abonado, CUOTA_VALOR);
     }, 0)
@@ -865,8 +866,8 @@ const Cuotas = ({ role, transactions }) => {
                   if(pagadaLocal) return total + CUOTA_VALOR;
                   const abonadoMes = (transactions||[])
                     .filter(t=> (t.type==="income"||t.type==="abono") && t.status==="confirmed" && t.description &&
-                      normA(t.description).includes(normA(a.alumno)) &&
-                      normA(t.description).includes(normA(mes)))
+                      norm(t.description).includes(norm(a.alumno)) &&
+                      norm(t.description).includes(norm(mes)))
                     .reduce((s,t)=>s+t.amount, 0);
                   return total + Math.min(abonadoMes, CUOTA_VALOR);
                 }, 0);
@@ -887,12 +888,12 @@ const Cuotas = ({ role, transactions }) => {
                       // Buscar TODOS los pagos para este alumno+mes
                       // Todos los pagos (para mostrar huevo amarillo aunque estén pendientes)
                       // Buscar income (cuota completa) Y abonos para este alumno+mes
-                      const normStr = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+                      
                       const txsMes = (transactions||[]).filter(t=>
                         (t.type==="income" || t.type==="abono") &&
                         t.description &&
-                        normStr(t.description).includes(normStr(a.alumno)) &&
-                        normStr(t.description).includes(normStr(mes))
+                        norm(t.description).includes(norm(a.alumno)) &&
+                        norm(t.description).includes(norm(mes))
                       );
                       const txsConfirmadas = txsMes.filter(t=>t.status==="confirmed");
                       // Suma TODOS los abonos y pagos completos confirmados
