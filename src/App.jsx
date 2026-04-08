@@ -145,17 +145,17 @@ const MOCK_USER = { id: "u1", name: "Lucia Araos", role: "treasurer", email: "lu
 const MOCK_TRANSACTIONS = [];
 
 const MOCK_STUDENTS = [
-  { id:"s1",  full_name:"Agatha Martínez",     		birth_date:"2022-07-20", guardian:"Francisco Martinez",    					guardian_phone:"+56912345678" },
-  { id:"s2",  full_name:"Agustin González Riquelme",birth_date:"2022-12-04", guardian:"Arelis Riquelme", 						guardian_phone:"+56923456789" },
-  { id:"s3",  full_name:"Alondra Arancibia",   		birth_date:"2022-08-08", guardian:"Patricia Aliaga",    					guardian_phone:"+56934567890" },
-  { id:"s4",  full_name:"Belén Fernandéz",   		birth_date:"2022-08-28", guardian:"Katherine González_Pablo Fernández", 	guardian_phone:"+56945678901" },
-  { id:"s5",  full_name:"Camilo Fuentes Araos",    	birth_date:"2022-11-22", guardian:"Lucia Araos_Tomás Fuentes",     			guardian_phone:"+56956789012" },
-  { id:"s6",  full_name:"Damián Jelvez",     		birth_date:"2022-05-15", guardian:"Ninoska Cáceres_Axel Jeldez",   			guardian_phone:"+56967890123" },
-  { id:"s7",  full_name:"Emiliano Silva",  			birth_date:"2022-11-21", guardian:"Allyson Roman",    						guardian_phone:"+56978901234" },
-  { id:"s8",  full_name:"Ián Olguín Córdova",    	birth_date:"2022-10-27", guardian:"Francisca Córdova_Kevin Olguín",    		guardian_phone:"+56989012345" },
-  { id:"s9",  full_name:"Iván Nuñez Oses",  		birth_date:"2023-03-02", guardian:"Michelle Oses",  						guardian_phone:"+56990123456" },
-  { id:"s10", full_name:"Josué Cancino",  			birth_date:"2022-11-11", guardian:"Ruth Galeas",  							guardian_phone:"+56901234567" },
-  { id:"s11", full_name:"Lucas Robledo",   			birth_date:"2022-04-08", guardian:"Angela Robledo",   						guardian_phone:"+56912340000" },
+  { id:"s1",  full_name:"Agatha Martínez",     				birth_date:"2022-07-20", guardian:"Francisco Martinez",    					guardian_phone:"+56912345678" },
+  { id:"s2",  full_name:"Agustin González",					birth_date:"2022-12-04", guardian:"Arelis Riquelme", 						guardian_phone:"+56923456789" },
+  { id:"s3",  full_name:"Alondra Arancibia",   				birth_date:"2022-08-08", guardian:"Patricia Aliaga",    					guardian_phone:"+56934567890" },
+  { id:"s4",  full_name:"Belén Fernandéz González",   		birth_date:"2022-08-28", guardian:"Katherine González_Pablo Fernández", 	guardian_phone:"+56945678901" },
+  { id:"s5",  full_name:"Camilo Fuentes Araos",    			birth_date:"2022-11-22", guardian:"Lucia Araos_Tomás Fuentes",     			guardian_phone:"+56956789012" },
+  { id:"s6",  full_name:"Damián Jelvez Cáceres",     		birth_date:"2022-05-15", guardian:"Ninoska Cáceres_Axel Jeldez",   			guardian_phone:"+56967890123" },
+  { id:"s7",  full_name:"Emiliano Silva",  					birth_date:"2022-11-21", guardian:"Allyson Roman",    						guardian_phone:"+56978901234" },
+  { id:"s8",  full_name:"Ián Olguín Córdova",    			birth_date:"2022-10-27", guardian:"Francisca Córdova_Kevin Olguín",    		guardian_phone:"+56989012345" },
+  { id:"s9",  full_name:"Iván Nuñez Oses",  				birth_date:"2023-03-02", guardian:"Michelle Oses",  						guardian_phone:"+56990123456" },
+  { id:"s10", full_name:"Josué Cancino",  					birth_date:"2022-11-11", guardian:"Ruth Galeas",  							guardian_phone:"+56901234567" },
+  { id:"s11", full_name:"Lucas Robledo",   					birth_date:"2022-04-08", guardian:"Angela Robledo",   						guardian_phone:"+56912340000" },
 ];
 
 const MONTHS_ES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
@@ -683,11 +683,11 @@ const CUOTA_VALOR = 5000;
 
 const MOCK_APODERADOS = [
   { id:"a1",  nombre:"Francisco Martínez",    					alumno:"Agatha Martínez",    			telefono:"+56912345678", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a2",  nombre:"Arelis Riquelme", 						alumno:"Agustín González Riquelme",  	telefono:"+56923456789", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a2",  nombre:"Arelis Riquelme", 						alumno:"Agustín González",  			telefono:"+56923456789", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a3",  nombre:"Patricia Aliaga",    						alumno:"Alondra Arancibia",  			telefono:"+56934567890", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a4",  nombre:"Katherine González_Pablo Fernandéz", 		alumno:"Belén Fernandéz", 				telefono:"+56945678901", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a4",  nombre:"Katherine González_Pablo Fernandéz", 		alumno:"Belén Fernandéz González", 		telefono:"+56945678901", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a5",  nombre:"Lucia Araos_Tomás Fuentes",     			alumno:"Camilo Fuentes Araos",  		telefono:"+56956789012", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
-  { id:"a6",  nombre:"Ninoska Cáceres_Axel Jelvez",   			alumno:"Damián Jelvez",   				telefono:"+56967890123", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a6",  nombre:"Ninoska Cáceres_Axel Jelvez",   			alumno:"Damián Jelvez Cáceres",   		telefono:"+56967890123", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a7",  nombre:"Allyson Roman",    						alumno:"Emiliano Silva", 				telefono:"+56978901234", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a8",  nombre:"Francisca Córdova_Kevin Olguín",    		alumno:"Ián Olguín Córdova",   			telefono:"+56989012345", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a9",  nombre:"Michelle Oses",  							alumno:"Iván Nuñez Oses",  				telefono:"+56990123456", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
@@ -757,8 +757,20 @@ const Cuotas = ({ role, transactions }) => {
     }).length
   , 0);
   const totalPendientes = totalCuotas - totalPagadas;
-  const montoRecaudado = totalPagadas   * CUOTA_VALOR;
-  const montoPendiente = totalPendientes * CUOTA_VALOR;
+  // Monto real recaudado (suma abonos reales)
+  const montoRecaudado = apoderados.reduce((sum, a) =>
+    sum + CUOTA_MESES.reduce((s, mes) => {
+      const pagadaLocal = a.cuotas[mes]==="pagada";
+      if(pagadaLocal) return s + CUOTA_VALOR;
+      const abonado = (transactions||[])
+        .filter(t=> t.type==="income" && t.status==="confirmed" && t.description &&
+          t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
+          t.description.toLowerCase().includes(mes.toLowerCase()))
+        .reduce((acc,t)=>acc+t.amount, 0);
+      return s + Math.min(abonado, CUOTA_VALOR);
+    }, 0)
+  , 0);
+  const montoPendiente = (totalCuotas * CUOTA_VALOR) - montoRecaudado;
 
   const toggleCuota = (id, mes) => {
     if(role !== "treasurer") return;
@@ -837,6 +849,17 @@ const Cuotas = ({ role, transactions }) => {
                     .reduce((s,t)=>s+t.amount, 0);
                   return pagadaLocal || totalAbonadoMes >= CUOTA_VALOR;
                 }).length;
+                // Monto real abonado (suma todos los abonos confirmados)
+                const montoRealAbonado = CUOTA_MESES.reduce((total, mes) => {
+                  const pagadaLocal = a.cuotas[mes]==="pagada";
+                  if(pagadaLocal) return total + CUOTA_VALOR;
+                  const abonadoMes = (transactions||[])
+                    .filter(t=> t.type==="income" && t.status==="confirmed" && t.description &&
+                      t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
+                      t.description.toLowerCase().includes(mes.toLowerCase()))
+                    .reduce((s,t)=>s+t.amount, 0);
+                  return total + Math.min(abonadoMes, CUOTA_VALOR);
+                }, 0);
                 const total   = CUOTA_MESES.length;
                 const pct     = Math.round((pagadas/total)*100);
                 const completo = pagadas === total;
@@ -902,7 +925,7 @@ const Cuotas = ({ role, transactions }) => {
                       <div style={{height:5,background:"#eee",borderRadius:3,margin:"0.2rem auto",overflow:"hidden",width:50}}>
                         <div style={{height:"100%",width:`${pct}%`,background:completo?"#16a34a":C.green,borderRadius:3}}/>
                       </div>
-                      <div style={{fontSize:"0.68rem",color:C.textLight,fontWeight:"800"}}>{fCLP(pagadas*CUOTA_VALOR)}</div>
+                      <div style={{fontSize:"0.68rem",color:C.textLight,fontWeight:"800"}}>{fCLP(montoRealAbonado)}</div>
                     </td>
                   </tr>
                 );
@@ -923,11 +946,22 @@ const Cuotas = ({ role, transactions }) => {
                       .reduce((s,t)=>s+t.amount, 0);
                     return pagadaLocal || totalAbonadoMes >= CUOTA_VALOR;
                   }).length;
+                  // Monto real recaudado en este mes
+                  const montoMes = apoderados.reduce((sum, a) => {
+                    const pagadaLocal = a.cuotas[mes]==="pagada";
+                    if(pagadaLocal) return sum + CUOTA_VALOR;
+                    const abonadoMes = (transactions||[])
+                      .filter(t=> t.type==="income" && t.status==="confirmed" && t.description &&
+                        t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
+                        t.description.toLowerCase().includes(mes.toLowerCase()))
+                      .reduce((s,t)=>s+t.amount, 0);
+                    return sum + Math.min(abonadoMes, CUOTA_VALOR);
+                  }, 0);
                   const all = n===apoderados.length;
                   return (
                     <td key={mes} style={{padding:"0.85rem 0.3rem",textAlign:"center"}}>
                       <div style={{fontWeight:"900",color:all?"#16a34a":C.textMid,fontSize:"0.8rem"}}>{n}/{apoderados.length}</div>
-                      <div style={{fontSize:"0.68rem",color:C.textLight,fontWeight:"700"}}>{fCLP(n*CUOTA_VALOR)}</div>
+                      <div style={{fontSize:"0.68rem",color:C.textLight,fontWeight:"700"}}>{fCLP(montoMes)}</div>
                     </td>
                   );
                 })}
