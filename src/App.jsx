@@ -146,7 +146,7 @@ const MOCK_TRANSACTIONS = [];
 
 const MOCK_STUDENTS = [
   { id:"s1",  full_name:"Agatha Martínez",     				birth_date:"2022-07-20", guardian:"Francisco Martinez",    					guardian_phone:"+56912345678" },
-  { id:"s2",  full_name:"Agustin González",					birth_date:"2022-12-04", guardian:"Arelis Riquelme", 						guardian_phone:"+56923456789" },
+  { id:"s2",  full_name:"Agustín González",					birth_date:"2022-12-04", guardian:"Arelis Riquelme", 						guardian_phone:"+56923456789" },
   { id:"s3",  full_name:"Alondra Arancibia",   				birth_date:"2022-08-08", guardian:"Patricia Aliaga",    					guardian_phone:"+56934567890" },
   { id:"s4",  full_name:"Belén Fernandéz González",   		birth_date:"2022-08-28", guardian:"Katherine González_Pablo Fernández", 	guardian_phone:"+56945678901" },
   { id:"s5",  full_name:"Camilo Fuentes Araos",    			birth_date:"2022-11-22", guardian:"Lucia Araos_Tomás Fuentes",     			guardian_phone:"+56956789012" },
@@ -265,9 +265,10 @@ const TransactionForm = ({ onSave, onClose }) => {
   const save = async () => {
     // Auto-generar descripción si es cuota
     let desc = f.description;
-    if(esCuota && alumnoSel) {
-      const ap = MOCK_APODERADOS.find(a=>a.alumno===alumnoSel);
-      desc = `Cuota ${mesSel} - ${alumnoSel}`;
+    if((esCuota==="abono"||esCuota==="completo") && alumnoSel) {
+      desc = esCuota==="abono"
+        ? `Abono ${mesSel} - ${alumnoSel}`
+        : `Cuota ${mesSel} - ${alumnoSel}`;
       set("description", desc);
     }
     if(!desc||!f.amount||!f.date) return alert("¡Completa todos los campos!");
@@ -302,12 +303,15 @@ const TransactionForm = ({ onSave, onClose }) => {
         <button onClick={()=>setEsCuota(false)} style={{...inputS,flex:1,cursor:"pointer",fontWeight:"800",background:!esCuota?C.green:"#fff",color:!esCuota?"#fff":C.textMid,border:`2px solid ${!esCuota?C.green:C.border}`,padding:"0.5rem"}}>
           🍄 Otro movimiento
         </button>
-        <button onClick={()=>{setEsCuota(true);set("type","income");set("amount","");}} style={{...inputS,flex:1,cursor:"pointer",fontWeight:"800",background:esCuota?C.green:"#fff",color:esCuota?"#fff":C.textMid,border:`2px solid ${esCuota?C.green:C.border}`,padding:"0.5rem"}}>
-          🥚 Pago de Cuota
+        <button onClick={()=>{setEsCuota("abono");set("type","abono");set("amount","");}} style={{...inputS,flex:1,cursor:"pointer",fontWeight:"800",background:esCuota==="abono"?C.yellow:"#fff",color:esCuota==="abono"?"#fff":C.textMid,border:`2px solid ${esCuota==="abono"?C.yellow:C.border}`,padding:"0.5rem"}}>
+          🟡 Abono parcial
+        </button>
+        <button onClick={()=>{setEsCuota("completo");set("type","income");set("amount","5000");}} style={{...inputS,flex:1,cursor:"pointer",fontWeight:"800",background:esCuota==="completo"?C.green:"#fff",color:esCuota==="completo"?"#fff":C.textMid,border:`2px solid ${esCuota==="completo"?C.green:C.border}`,padding:"0.5rem"}}>
+          🥚 Cuota Completa
         </button>
       </div>
 
-      {esCuota ? (
+      {(esCuota==="abono"||esCuota==="completo") ? (
         <>
           <div>
             <label style={labelS}>Alumno</label>
