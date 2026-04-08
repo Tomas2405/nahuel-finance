@@ -467,11 +467,11 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
                   <td style={{padding:"0.75rem 1rem",color:C.textMid,whiteSpace:"nowrap",fontWeight:"700"}}>{fDate(tx.date)}</td>
                   <td style={{padding:"0.75rem 1rem",color:C.text,fontWeight:"600",maxWidth:220}}>{tx.description}</td>
                   <td style={{padding:"0.75rem 1rem"}}>
-                    <span style={{display:"inline-flex",alignItems:"center",gap:"0.3rem",padding:"0.25rem 0.75rem",borderRadius:"2rem",fontSize:"0.78rem",fontWeight:"900",background:tx.type==="expense"?"#fee2e2":(tx.type==="abono"?"#fef9c3":"#dcfce7"),color:tx.type==="expense"?C.red:(tx.type==="abono"?"#854d0e":"#15803d")}}>
+                    <span style={{display:"inline-flex",alignItems:"center",gap:"0.3rem",padding:"0.25rem 0.75rem",borderRadius:"2rem",fontSize:"0.78rem",fontWeight:"900",background:tx.type==="expense"?"#fee2e2":(tx.type==="abono"?"#d1fae5":"#dcfce7"),color:tx.type==="expense"?C.red:(tx.type==="abono"?"#065f46":"#15803d")}}>
                       {tx.type==="income"?<span style={{display:"inline-flex",alignItems:"center",gap:4}}><img src={IMGS.egg_white_green} alt="" style={{width:16,height:"auto"}}/> Ingreso</span>:tx.type==="abono"?<span style={{display:"inline-flex",alignItems:"center",gap:4}}><img src={IMGS.egg_white_yellow} alt="" style={{width:16,height:"auto"}}/> Abono</span>:<span style={{display:"inline-flex",alignItems:"center",gap:4}}><img src={IMGS.egg_white_red} alt="" style={{width:16,height:"auto"}}/> Egreso</span>}
                     </span>
                   </td>
-                  <td style={{padding:"0.75rem 1rem",fontWeight:"900",color:tx.type==="income"?"#15803d":C.red,whiteSpace:"nowrap"}}>
+                  <td style={{padding:"0.75rem 1rem",fontWeight:"900",color:tx.type==="expense"?C.red:(tx.type==="abono"?"#d97706":"#15803d"),whiteSpace:"nowrap"}}>
                     {tx.type==="expense"?"-":"+"}{fCLP(tx.amount)}
                   </td>
                   <td style={{padding:"0.75rem 1rem",fontWeight:"900",color:C.green,whiteSpace:"nowrap"}}>{fCLP(tx.balance_after)}</td>
@@ -553,7 +553,7 @@ const Comprobantes = ({ transactions }) => {
             </div>
             <div>
               <p style={{margin:"0 0 0.25rem",fontWeight:"800",color:C.text,fontSize:"0.9rem"}}>{tx.description}</p>
-              <p style={{margin:0,fontSize:"0.85rem",fontWeight:"900",color:tx.type==="expense"?C.red:(tx.type==="abono"?"#b45309":"#16a34a")}}>{tx.type==="expense"?"-":"+"}{fCLP(tx.amount)}</p>
+              <p style={{margin:0,fontSize:"0.85rem",fontWeight:"900",color:tx.type==="expense"?C.red:(tx.type==="abono"?"#92400e":"#16a34a")}}>{tx.type==="expense"?"-":"+"}{fCLP(tx.amount)}</p>
             </div>
             <div style={{display:"flex",gap:"0.5rem",marginTop:"auto"}}>
               <a href={tx.receipt_url} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"0.4rem",padding:"0.55rem",borderRadius:"0.7rem",background:C.greenLight,border:`2px solid ${C.border}`,color:C.greenDark,textDecoration:"none",fontSize:"0.82rem",fontWeight:"900"}}>
