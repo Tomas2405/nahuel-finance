@@ -875,18 +875,21 @@ const Cuotas = ({ role, transactions }) => {
                       const pagada = a.cuotas[mes]==="pagada";
                       // Check if there's a confirmed transaction for this apoderado+mes
                       // Buscar TODOS los pagos para este alumno+mes
+                      // Todos los pagos (para mostrar huevo amarillo aunque estén pendientes)
                       const txsMes = (transactions||[]).filter(t=>
                         t.type==="income" &&
-                        t.status==="confirmed" &&
                         t.description &&
                         t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
                         t.description.toLowerCase().includes(mes.toLowerCase())
                       );
-                      const totalAbonado = txsMes.reduce((s,t)=>s+t.amount, 0);
-                      const txConfirmada = txsMes.find(t=>t.status==="confirmed");
+                      // Solo confirmados para calcular montos
+                      const txsConfirmadas = txsMes.filter(t=>t.status==="confirmed");
+                      const totalAbonado = txsConfirmadas.reduce((s,t)=>s+t.amount, 0);
+                      const totalTodos = txsMes.reduce((s,t)=>s+t.amount, 0);
+                      const txConfirmada = txsConfirmadas[0];
                       const tieneComprobante = txConfirmada && txConfirmada.receipt_url;
                       const pagadoCompleto = pagada || totalAbonado >= CUOTA_VALOR;
-                      const tieneAbono = totalAbonado > 0 && totalAbonado < CUOTA_VALOR;
+                      const tieneAbono = totalTodos > 0 && !pagadoCompleto;
                       const confirmadoPorTx = totalAbonado >= CUOTA_VALOR;
                       const estaOK = pagadoCompleto;
                       return (
