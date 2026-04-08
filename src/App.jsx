@@ -256,7 +256,7 @@ const Modal = ({ title, onClose, children }) => (
 const TransactionForm = ({ onSave, onClose }) => {
   const [f, setF] = useState({ date:new Date().toISOString().split("T")[0], description:"", type:"income", amount:"" });
   const set = (k,v) => setF(p=>({...p,[k]:v}));
-  const [compFile, setCompFile] = useState(null);
+  const [compFiles, setCompFiles] = useState([]);
   const [saving, setSaving] = useState(false);
   const [esCuota, setEsCuota] = useState(false);
   const [alumnoSel, setAlumnoSel] = useState("");
@@ -275,18 +275,22 @@ const TransactionForm = ({ onSave, onClose }) => {
     setSaving(true);
     const amt = parseFloat(f.amount);
     let receipt_url = null;
-    if(compFile) {
+    if(compFiles.length > 0) {
       try {
         const limpio = desc.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9\s]/g,"").trim().replace(/\s+/g,"_");
-        const ext = compFile.name.split(".").pop();
-        const nombre = `${limpio}_${Date.now()}.${ext}`;
-        const res = await fetch(`${SUPA_URL}/storage/v1/object/comprobantes/${nombre}`, {
-          method:"POST",
-          headers:{"Authorization":`Bearer ${SUPA_KEY}`,"Content-Type":compFile.type,"x-upsert":"true"},
-          body:compFile
-        });
-        if(res.ok) receipt_url = `${SUPA_URL}/storage/v1/object/public/comprobantes/${nombre}`;
-      } catch(e) { console.error("Error subiendo comprobante", e); }
+        const urls = [];
+        for(const file of compFiles) {
+          const ext = file.name.split(".").pop();
+          const nombre = `${limpio}_${Date.now()}_${Math.random().toString(36).slice(2,6)}.${ext}`;
+          const res = await fetch(`${SUPA_URL}/storage/v1/object/comprobantes/${nombre}`, {
+            method:"POST",
+            headers:{"Authorization":`Bearer ${SUPA_KEY}`,"Content-Type":file.type,"x-upsert":"true"},
+            body:file
+          });
+          if(res.ok) urls.push(`${SUPA_URL}/storage/v1/object/public/comprobantes/${nombre}`);
+        }
+        if(urls.length > 0) receipt_url = urls[0]; // primera URL como principal
+      } catch(e) { console.error("Error subiendo comprobantes", e); }
     }
     const newTx = {...f, description:desc, amount:amt, id:"t"+Date.now(), status:receipt_url?"confirmed":"pending", receipt_url, created_by:MOCK_USER.name, created_at:new Date().toISOString(), balance_after:amt};
     await dbGuardar(newTx);
@@ -347,10 +351,14 @@ const TransactionForm = ({ onSave, onClose }) => {
       <div>
         <label style={labelS}>📎 Comprobante (opcional)</label>
         <div style={{border:`2px dashed ${C.border}`,borderRadius:"0.75rem",padding:"1rem",background:C.greenLight,textAlign:"center"}}>
-          <input type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={e=>setCompFile(e.target.files[0])} style={{fontSize:"0.82rem",fontFamily:"'Nunito',sans-serif"}}/>
-          {compFile
-            ? <p style={{margin:"0.5rem 0 0",fontSize:"0.8rem",color:C.green,fontWeight:"800"}}>✅ {compFile.name}</p>
-            : <p style={{margin:"0.5rem 0 0",fontSize:"0.75rem",color:C.textLight}}>PDF, JPG, PNG · máx. 5MB · Si subes comprobante pasa a Confirmado automáticamente</p>
+          <input type="file" accept=".pdf,.jpg,.jpeg,.png" multiple onChange={e=>setCompFiles(Array.from(e.target.files))} style={{fontSize:"0.82rem",fontFamily:"'Nunito',sans-serif"}}/>
+          {compFiles.length > 0
+            ? <div style={{marginTop:"0.5rem"}}>
+                {compFiles.map((f,i)=>(
+                  <p key={i} style={{margin:"0.2rem 0",fontSize:"0.8rem",color:C.green,fontWeight:"800"}}>✅ {f.name}</p>
+                ))}
+              </div>
+            : <p style={{margin:"0.5rem 0 0",fontSize:"0.75rem",color:C.textLight}}>PDF, JPG, PNG · máx. 5MB · Puedes seleccionar varios archivos · Si subes comprobante pasa a Confirmado</p>
           }
         </div>
       </div>
