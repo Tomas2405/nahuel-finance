@@ -882,11 +882,12 @@ const Cuotas = ({ role, transactions }) => {
                       // Buscar TODOS los pagos para este alumno+mes
                       // Todos los pagos (para mostrar huevo amarillo aunque estén pendientes)
                       // Buscar income (cuota completa) Y abonos para este alumno+mes
+                      const normStr = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
                       const txsMes = (transactions||[]).filter(t=>
                         (t.type==="income" || t.type==="abono") &&
                         t.description &&
-                        t.description.toLowerCase().includes(a.alumno.toLowerCase()) &&
-                        t.description.toLowerCase().includes(mes.toLowerCase())
+                        normStr(t.description).includes(normStr(a.alumno)) &&
+                        normStr(t.description).includes(normStr(mes))
                       );
                       const txsConfirmadas = txsMes.filter(t=>t.status==="confirmed");
                       // Suma TODOS los abonos y pagos completos confirmados
