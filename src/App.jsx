@@ -553,7 +553,7 @@ const Comprobantes = ({ transactions }) => {
             </div>
             <div>
               <p style={{margin:"0 0 0.25rem",fontWeight:"800",color:C.text,fontSize:"0.9rem"}}>{tx.description}</p>
-              <p style={{margin:0,fontSize:"0.85rem",fontWeight:"900",color:tx.type==="expense"?C.red:(tx.type==="abono"?"#92400e":"#16a34a")}}>{tx.type==="expense"?"-":"+"}{fCLP(tx.amount)}</p>
+              <p style={{margin:0,fontSize:"0.85rem",fontWeight:"900",color:tx.type==="expense"?C.red:(tx.type==="abono"?"#d97706":"#16a34a")}}>{tx.type==="expense"?"-":"+"}{fCLP(tx.amount)}</p>
             </div>
             <div style={{display:"flex",gap:"0.5rem",marginTop:"auto"}}>
               <a href={tx.receipt_url} style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:"0.4rem",padding:"0.55rem",borderRadius:"0.7rem",background:C.greenLight,border:`2px solid ${C.border}`,color:C.greenDark,textDecoration:"none",fontSize:"0.82rem",fontWeight:"900"}}>
