@@ -358,6 +358,18 @@ const TransactionForm = ({ onSave, onClose }) => {
   );
 };
 
+
+// Recalcula balance_after de todas las transacciones ordenadas por fecha
+const recalcularSaldos = (txs) => {
+  let saldo = 0;
+  return [...txs]
+    .sort((a,b) => new Date(a.created_at)-new Date(b.created_at))
+    .map(t => {
+      saldo += t.type==="income" ? t.amount : -t.amount;
+      return {...t, balance_after: saldo};
+    });
+};
+
 // ─── PAGE 1: LIBRO CONTABLE ───────────────────────────────────
 const LibroContable = ({ transactions, setTransactions, role }) => {
   const [filter, setFilter] = useState("all");
@@ -371,13 +383,7 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
     dbCargar().then(data => {
       if (data && data.length > 0) {
         // Recalcular balance_after correctamente
-        let saldo = 0;
-        const fixed = [...data]
-          .sort((a,b)=> new Date(a.created_at)-new Date(b.created_at))
-          .map(t => {
-            saldo += t.type==="income" ? t.amount : -t.amount;
-            return {...t, balance_after: saldo};
-          });
+        const fixed = recalcularSaldos(data);
         setTransactions(fixed);
       }
       setDbLoading(false);
@@ -394,8 +400,7 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
   const exp = transactions.filter(t=>t.type==="expense").reduce((a,b)=>a+b.amount,0);
 
   const handleSave = tx => {
-    const prev = transactions[transactions.length-1]?.balance_after||0;
-    setTransactions(p=>[...p,{...tx,balance_after:tx.type==="income"?prev+tx.amount:prev-tx.amount}]);
+    setTransactions(p => recalcularSaldos([...p, tx]));
   };
 
   const kpis = [
@@ -491,7 +496,7 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
                           if(!window.confirm("¿Eliminar esta transacción?")) return;
                           const ok = await dbEliminar(tx.id);
                           if(ok) {
-                            setTransactions(prev=>prev.filter(t=>t.id!==tx.id));
+                            setTransactions(prev=>recalcularSaldos(prev.filter(t=>t.id!==tx.id)));
                           } else {
                             alert("❌ Error al eliminar. Intenta de nuevo.");
                           }
