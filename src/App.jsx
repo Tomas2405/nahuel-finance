@@ -369,7 +369,7 @@ const recalcularSaldos = (txs) => {
   return [...txs]
     .sort((a,b) => new Date(a.date)-new Date(b.date) || new Date(a.created_at)-new Date(b.created_at))
     .map(t => {
-      saldo += t.type==="income" ? t.amount : -t.amount;
+      saldo += (t.type==="income"||t.type==="abono") ? t.amount : -t.amount;
       return {...t, balance_after: saldo};
     });
 };
@@ -400,7 +400,7 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
     return l.sort((a,b)=>sortAsc?a.date.localeCompare(b.date):b.date.localeCompare(a.date));
   },[transactions,filter,sortAsc]);
 
-  const inc = transactions.filter(t=>t.type==="income").reduce((a,b)=>a+b.amount,0);
+  const inc = transactions.filter(t=>t.type==="income"||t.type==="abono").reduce((a,b)=>a+b.amount,0);
   const exp = transactions.filter(t=>t.type==="expense").reduce((a,b)=>a+b.amount,0);
 
   const handleSave = tx => {
@@ -467,12 +467,12 @@ const LibroContable = ({ transactions, setTransactions, role }) => {
                   <td style={{padding:"0.75rem 1rem",color:C.textMid,whiteSpace:"nowrap",fontWeight:"700"}}>{fDate(tx.date)}</td>
                   <td style={{padding:"0.75rem 1rem",color:C.text,fontWeight:"600",maxWidth:220}}>{tx.description}</td>
                   <td style={{padding:"0.75rem 1rem"}}>
-                    <span style={{display:"inline-flex",alignItems:"center",gap:"0.3rem",padding:"0.25rem 0.75rem",borderRadius:"2rem",fontSize:"0.78rem",fontWeight:"900",background:tx.type==="income"?"#dcfce7":"#fee2e2",color:tx.type==="income"?"#15803d":C.red}}>
-                      {tx.type==="income"?<span style={{display:"inline-flex",alignItems:"center",gap:4}}><img src={IMGS.egg_white_green} alt="" style={{width:16,height:"auto"}}/> Ingreso</span>:<span style={{display:"inline-flex",alignItems:"center",gap:4}}><img src={IMGS.egg_white_red} alt="" style={{width:16,height:"auto"}}/> Egreso</span>}
+                    <span style={{display:"inline-flex",alignItems:"center",gap:"0.3rem",padding:"0.25rem 0.75rem",borderRadius:"2rem",fontSize:"0.78rem",fontWeight:"900",background:tx.type==="expense"?"#fee2e2":(tx.type==="abono"?"#fffbe6":"#dcfce7"),color:tx.type==="expense"?C.red:(tx.type==="abono"?"#92400e":"#15803d")}}>
+                      {tx.type==="income"?<span style={{display:"inline-flex",alignItems:"center",gap:4}}><img src={IMGS.egg_white_green} alt="" style={{width:16,height:"auto"}}/> Ingreso</span>:tx.type==="abono"?<span style={{display:"inline-flex",alignItems:"center",gap:4}}><img src={IMGS.egg_white_yellow} alt="" style={{width:16,height:"auto"}}/> Abono</span>:<span style={{display:"inline-flex",alignItems:"center",gap:4}}><img src={IMGS.egg_white_red} alt="" style={{width:16,height:"auto"}}/> Egreso</span>}
                     </span>
                   </td>
                   <td style={{padding:"0.75rem 1rem",fontWeight:"900",color:tx.type==="income"?"#15803d":C.red,whiteSpace:"nowrap"}}>
-                    {tx.type==="income"?"+":"-"}{fCLP(tx.amount)}
+                    {tx.type==="expense"?"-":"+"}{fCLP(tx.amount)}
                   </td>
                   <td style={{padding:"0.75rem 1rem",fontWeight:"900",color:C.green,whiteSpace:"nowrap"}}>{fCLP(tx.balance_after)}</td>
                   <td style={{padding:"0.75rem 1rem"}}>
@@ -901,7 +901,9 @@ const Cuotas = ({ role, transactions }) => {
                       const tieneComprobante = !!txConfirmada?.receipt_url;
                       // Verde si suma >= 5000, amarillo si hay algo pero menos de 5000
                       const pagadoCompleto = pagada || totalAbonado >= CUOTA_VALOR;
-                      const tieneAbono = totalTodos > 0 && !pagadoCompleto;
+                      const totalPendiente = txsMes.filter(t=>t.status==="pending").reduce((s,t)=>s+t.amount, 0);
+                      const tieneAbono = (totalTodos > 0) && !pagadoCompleto;
+                      const montoMostrar = totalAbonado > 0 ? totalAbonado : totalPendiente;
                       const confirmadoPorTx = totalAbonado >= CUOTA_VALOR;
                       const estaOK = pagadoCompleto;
                       return (
@@ -921,7 +923,7 @@ const Cuotas = ({ role, transactions }) => {
                             </span>
                             {tieneAbono && (
                                 <div style={{fontSize:"0.55rem",fontWeight:"900",color:C.yellow,lineHeight:1,marginTop:"0.1rem"}}>
-                                  ${totalAbonado.toLocaleString("es-CL")}
+                                  ${montoMostrar.toLocaleString("es-CL")}
                                 </div>
                               )}
                             {role==="treasurer" && pagada && (
