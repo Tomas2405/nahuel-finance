@@ -363,7 +363,7 @@ const TransactionForm = ({ onSave, onClose }) => {
 const recalcularSaldos = (txs) => {
   let saldo = 0;
   return [...txs]
-    .sort((a,b) => new Date(a.created_at)-new Date(b.created_at))
+    .sort((a,b) => new Date(a.date)-new Date(b.date) || new Date(a.created_at)-new Date(b.created_at))
     .map(t => {
       saldo += t.type==="income" ? t.amount : -t.amount;
       return {...t, balance_after: saldo};
