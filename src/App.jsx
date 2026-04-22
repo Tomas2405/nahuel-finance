@@ -156,6 +156,8 @@ const MOCK_STUDENTS = [
   { id:"s9",  full_name:"Iván Nuñez Oses",  				birth_date:"2023-03-02", guardian:"Michelle Oses",  						guardian_phone:"+56990123456" },
   { id:"s10", full_name:"Josué Cancino",  					birth_date:"2022-11-11", guardian:"Ruth Galeas",  							guardian_phone:"+56901234567" },
   { id:"s11", full_name:"Lucas Robledo",   					birth_date:"2022-04-08", guardian:"Angela Robledo",   						guardian_phone:"+56912340000" },
+  { id:"s12", full_name:"Emma Peñaloza",   					birth_date:"2023-01-06", guardian:"Alicia de la Hoz",   					guardian_phone:"+56912340000" },
+  { id:"s13", full_name:"Amaia Mcgregor",   				birth_date:"2022-12-07", guardian:"Katheryn Spencer",   					guardian_phone:"+56912340000" },
 ];
 
 const MONTHS_ES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
@@ -710,6 +712,8 @@ const MOCK_APODERADOS = [
   { id:"a9",  nombre:"Michelle Oses",  							alumno:"Iván Nuñez Oses",  				telefono:"+56990123456", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a10", nombre:"Ruth Galeas",  							alumno:"Josué Cancino", 				telefono:"+56901234567", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
   { id:"a11", nombre:"Angela Robledo",   						alumno:"Lucas Robledo", 				telefono:"+56912340000", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a12", nombre:"Alicia de la Hoz",						alumno:"Emma Peñaloza",					telefono:"+56912340000", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
+  { id:"a13", nombre:"Katheryn Spencer",						alumno:"Amaia Mcgregor",				telefono:"+56912340000", cuotas:{Abril:"pendiente",Mayo:"pendiente",Junio:"pendiente",Julio:"pendiente",Agosto:"pendiente",Septiembre:"pendiente",Octubre:"pendiente",Noviembre:"pendiente",Diciembre:"pendiente"} },
 ];
 
 // ─── UPLOAD MODAL ──────────────────────────────────────────────
